@@ -87,6 +87,7 @@ body {
   position: absolute;
   top: 38%;
   left: 50%;
+  transform: translate(-50%, -50%);
   width: 720px;
   height: 720px;
   pointer-events: none;
@@ -99,6 +100,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
   width: 520px;
   height: 520px;
   pointer-events: none;

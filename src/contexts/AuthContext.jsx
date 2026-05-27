@@ -54,9 +54,17 @@ export function AuthProvider({ children }) {
     if (user) await fetchProfile(user.id);
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg flex items-center justify-center">
+        <span className="inline-block w-6 h-6 rounded-full border-2 border-coral/30 border-t-coral animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signOut, getToken, refreshProfile }}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }

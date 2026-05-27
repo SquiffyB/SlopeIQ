@@ -1,5 +1,5 @@
-const Stripe = require('stripe');
-const { createClient } = require('@supabase/supabase-js');
+import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -7,7 +7,7 @@ const CORS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: CORS };
 
   try {
@@ -22,7 +22,7 @@ exports.handler = async (event) => {
     const { priceId, mode = 'subscription' } = JSON.parse(event.body || '{}');
     if (!priceId) return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Missing priceId' }) };
 
-    const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
     const { data: profile } = await supabase.from('profiles').select('stripe_customer_id, email').eq('id', user.id).single();
 
     let customerId = profile?.stripe_customer_id;

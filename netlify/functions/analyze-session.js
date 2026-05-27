@@ -1,4 +1,4 @@
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -65,7 +65,7 @@ You must cover exactly these 7 categories in this order. Return a JSON array onl
 
 For each observation: 1–3 sentences. Reference actual data points (mph, ft, run numbers, percentages). Cross-Session Insight requires 2+ sessions to be meaningful — if only one session exists, note what to watch for next time.`;
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: CORS };
 
   try {

@@ -7,3 +7,6 @@ dist
 *.log
 .vite
 .claude
+
+# Local Netlify folder
+.netlify

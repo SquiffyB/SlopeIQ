@@ -91,13 +91,25 @@ exports.handler = async (event) => {
     let observations = [];
     if (isPro) {
       const prompt = `Here is my ski session data:\n${JSON.stringify(sessionData, null, 2)}\n\nSession history (${history.length} prior sessions): ${history.length > 0 ? 'available' : 'none yet'}\n\nGenerate coaching observations.`;
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1500, system: SYSTEM_PROMPT, messages: [{ role: 'user', content: prompt }] })
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'HTTP-Referer': 'https://slopeiq.com',
+          'X-Title': 'SlopeIQ',
+        },
+        body: JSON.stringify({
+          model: 'anthropic/claude-sonnet-4-5',
+          max_tokens: 1500,
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: prompt },
+          ],
+        }),
       });
       const data = await res.json();
-      const text = data?.content?.[0]?.text || '';
+      const text = data?.choices?.[0]?.message?.content || '';
       try {
         const cleaned = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
         observations = JSON.parse(cleaned);

@@ -97,13 +97,22 @@ exports.handler = async (event) => {
     const systemPrompt = buildSystemPrompt(userProfile, trailData);
     const messages = [...history.map(m => ({ role: m.role, content: m.content })), { role: 'user', content: message }];
 
-    const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+    const aiRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1200, system: systemPrompt, messages }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://slopeiq.com',
+        'X-Title': 'SlopeIQ',
+      },
+      body: JSON.stringify({
+        model: 'anthropic/claude-sonnet-4-5',
+        max_tokens: 1200,
+        messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      }),
     });
     const aiData = await aiRes.json();
-    const reply = aiData?.content?.[0]?.text || "I'm having trouble connecting right now. Try again in a moment.";
+    const reply = aiData?.choices?.[0]?.message?.content || "I'm having trouble connecting right now. Try again in a moment.";
 
     const updatedHistory = [...history, { role: 'user', content: message }, { role: 'assistant', content: reply }];
     if (conversationId) {

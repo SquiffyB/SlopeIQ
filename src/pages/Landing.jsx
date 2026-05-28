@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import SlopeScoreDisplay from '../components/SlopeScoreDisplay';
+import SmoothScrollHero from '../components/SmoothScrollHero';
 
 /* ── animation helpers ── */
 const fadeUp = {
@@ -153,60 +153,11 @@ function FeatureSection({ label, headline, body, visual, flip = false }) {
 const DIMS = { consistency: 72, fatigue: 88, vertical: 65, progression: 55, recovery: 80 };
 
 export default function Landing() {
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
   return (
     <div>
 
       {/* ── Hero ── */}
-      <section ref={heroRef} className="relative overflow-hidden min-h-[92vh] flex items-center">
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="w-full">
-          <div className="max-w-[1100px] mx-auto px-6 py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-            {/* Left: text */}
-            <motion.div variants={stagger} initial="hidden" animate="show">
-              <motion.p variants={fadeUp} className="eyebrow">AI Coaching for Skiers</motion.p>
-              <motion.h1 variants={fadeUp} className="text-[58px] sm:text-[76px] font-semibold leading-[1.0] tracking-tight mt-5 text-ink">
-                Your ski data,<br />finally<br />useful.
-              </motion.h1>
-              <motion.p variants={fadeUp} className="mt-7 text-muted text-[18px] sm:text-[20px] leading-relaxed max-w-[460px]">
-                Upload your Slopes session. Get coaching grounded in your own numbers — not generic tips.
-              </motion.p>
-              <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center gap-4">
-                <Link to="/signup" className="btn-primary text-[16px] px-8 py-4">Get started free</Link>
-                <Link to="/how-it-works" className="btn-ghost text-[16px] px-8 py-4">How it works</Link>
-              </motion.div>
-              <motion.p variants={fadeUp} className="mt-5 text-muted-2 text-[13px]">
-                One free session. No credit card required.
-              </motion.p>
-            </motion.div>
-
-            {/* Right: floating cards */}
-            <motion.div
-              initial="hidden" animate="show"
-              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.15, delayChildren: 0.3 } } }}
-              className="relative h-[480px] hidden lg:block"
-            >
-              <motion.div variants={fadeUp} className="absolute top-0 right-8"
-                animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}>
-                <ScoreCard />
-              </motion.div>
-              <motion.div variants={fadeUp} className="absolute top-36 left-0"
-                animate={{ y: [0, 8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}>
-                <RunCard />
-              </motion.div>
-              <motion.div variants={fadeUp} className="absolute bottom-4 right-4"
-                animate={{ y: [0, -6, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}>
-                <DebriefCard />
-              </motion.div>
-            </motion.div>
-
-          </div>
-        </motion.div>
-      </section>
+      <SmoothScrollHero />
 
       {/* ── Marquee ── */}
       <Marquee />

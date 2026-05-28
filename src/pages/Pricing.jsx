@@ -53,7 +53,7 @@ export default function Pricing() {
   async function handleUpgrade() {
     if (!user) { window.location.href = '/signup'; return; }
     const token = await getToken();
-    const res = await fetch('/.netlify/functions/create-checkout', {
+    const res = await fetch('/api/create-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ priceId: annual ? 'price_annual_placeholder' : 'price_monthly_placeholder' }),

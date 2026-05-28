@@ -56,7 +56,7 @@ export default function Debrief() {
       setSession(parsed);
 
       const token = await getToken();
-      const res = await fetch('/.netlify/functions/analyze-session', {
+      const res = await fetch('/api/analyze-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ sessionData: parsed }),

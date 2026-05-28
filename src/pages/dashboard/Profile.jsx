@@ -21,7 +21,7 @@ export default function Profile() {
     setLoading(true);
     try {
       const token = await getToken();
-      const res = await fetch('/.netlify/functions/create-checkout', {
+      const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ priceId: 'price_monthly_placeholder' }),

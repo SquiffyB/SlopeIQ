@@ -34,23 +34,23 @@ export default function SlopeScoreDisplay({ score = 0, trend = null, dimensions 
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
           <defs>
             <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#e8634a" />
-              <stop offset="100%" stopColor="#4ecdc4" />
+              <stop offset="0%" stopColor="#3898EC" />
+              <stop offset="100%" stopColor="#60A5FA" />
             </linearGradient>
           </defs>
           {/* Track */}
-          <path d={trackPath} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={sw} strokeLinecap="round" />
+          <path d={trackPath} fill="none" stroke="rgba(31,32,37,0.08)" strokeWidth={sw} strokeLinecap="round" />
           {/* Fill */}
           {fillPath && <path d={fillPath} fill="none" stroke="url(#scoreGrad)" strokeWidth={sw} strokeLinecap="round" />}
           {/* Score */}
-          <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="middle" fontSize={size * 0.22} fontFamily="Instrument Serif, serif" fill="#f0f0ee" fontWeight="400">
+          <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="middle" fontSize={size * 0.22} fontFamily="Inter, sans-serif" fill="#1F2025" fontWeight="700">
             {score}
           </text>
-          <text x={cx} y={cy + size * 0.14} textAnchor="middle" fontSize={size * 0.07} fill="#8a8a9a" fontFamily="DM Sans, sans-serif" letterSpacing="0.1em">
+          <text x={cx} y={cy + size * 0.14} textAnchor="middle" fontSize={size * 0.07} fill="#94A3B8" fontFamily="Inter, sans-serif" letterSpacing="0.1em">
             SLOPESCORE
           </text>
           {trend !== null && (
-            <text x={cx} y={cy + size * 0.24} textAnchor="middle" fontSize={size * 0.07} fill={trend >= 0 ? '#4ecdc4' : '#e8634a'} fontFamily="DM Sans, sans-serif">
+            <text x={cx} y={cy + size * 0.24} textAnchor="middle" fontSize={size * 0.07} fill={trend >= 0 ? '#3898EC' : '#EF4444'} fontFamily="Inter, sans-serif">
               {trend >= 0 ? '+' : ''}{trend} this month
             </text>
           )}
@@ -67,7 +67,7 @@ export default function SlopeScoreDisplay({ score = 0, trend = null, dimensions 
                 {locked ? (
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-[13px] text-muted-2 w-36 shrink-0">{dim.label}</span>
-                    <div className="flex-1 h-1.5 rounded-full bg-white/5 relative overflow-hidden">
+                    <div className="flex-1 h-1.5 rounded-full bg-ink/5 relative overflow-hidden">
                       <div className="absolute inset-0 backdrop-blur-sm" />
                     </div>
                     <span className="text-[10px] uppercase tracking-wider text-coral bg-coral/10 px-2 py-0.5 rounded-full shrink-0">Pro</span>
@@ -75,7 +75,7 @@ export default function SlopeScoreDisplay({ score = 0, trend = null, dimensions 
                 ) : (
                   <div className="flex items-center gap-3">
                     <span className="text-[13px] text-muted w-36 shrink-0">{dim.label}</span>
-                    <div className="flex-1 h-1.5 rounded-full bg-white/08">
+                    <div className="flex-1 h-1.5 rounded-full bg-ink/10">
                       <div className="h-full rounded-full bg-gradient-to-r from-coral to-teal transition-all duration-700" style={{ width: `${val}%` }} />
                     </div>
                     <span className="text-[13px] text-ink font-medium w-8 text-right shrink-0">{val}</span>

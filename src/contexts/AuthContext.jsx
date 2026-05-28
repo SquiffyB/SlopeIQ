@@ -52,7 +52,7 @@ export function AuthProvider({ children }) {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg flex items-center justify-center">
-        <span className="inline-block w-6 h-6 rounded-full border-2 border-coral/30 border-t-coral animate-spin" />
+        <span className="inline-block w-5 h-5 rounded-full border-2 border-ink/10 border-t-ink/40 animate-spin" />
       </div>
     );
   }

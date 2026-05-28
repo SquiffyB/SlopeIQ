@@ -12,8 +12,8 @@ export default {
         teal: '#60A5FA',
         'score-gold': '#F5C842',
         ink: '#1F2025',
-        muted: '#64748B',
-        'muted-2': '#94A3B8',
+        muted: '#4B5A6A',
+        'muted-2': '#64748B',
         line: 'rgba(31,32,37,0.10)',
       },
       fontFamily: {

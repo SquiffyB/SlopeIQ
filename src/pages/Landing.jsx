@@ -32,7 +32,7 @@ function InView({ children, className, delay = 0 }) {
 const MARQUEE_ITEMS = [
   'Consistency Score', 'Fatigue Window', 'Vertical Rate', 'Run Analysis',
   'Mountain Coach', 'SlopeScore', 'Peak Window', 'Rest Sensitivity',
-  'Session Debrief', 'Progression Tracking', 'Resort Planning', 'AI Coaching',
+  'Session Debrief', 'Progression Tracking', 'Resort Planning', 'Data-Driven Coaching',
 ];
 
 function Marquee() {
@@ -119,7 +119,7 @@ function DebriefCard() {
     <div className="bg-white rounded-2xl p-5 w-[210px] shadow-xl border border-line">
       <div className="flex items-center justify-between mb-4">
         <p className="text-[10px] font-semibold tracking-widest text-muted-2 uppercase">Fatigue Window</p>
-        <span className="text-[9px] bg-coral/10 text-coral font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">AI</span>
+        <span className="text-[9px] bg-coral/10 text-coral font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Data</span>
       </div>
       <p className="text-[12px] text-muted leading-relaxed">
         Your speed dropped <span className="text-ink font-semibold">18%</span> between runs 7–10, peaking at 34 mph early then settling at 28. Classic mid-session fade — build in a break after run 8.
@@ -166,7 +166,7 @@ export default function Landing() {
       <FeatureSection
         label="Session Debrief"
         headline="Know what actually happened out there."
-        body="Upload your .slopes file and get a full breakdown — SlopeScore, seven AI coaching observations grounded in your exact numbers, and a run-by-run timeline. Not summaries. Not averages. The real story."
+        body="Upload your .slopes file and get a full breakdown — SlopeScore, seven data-driven coaching observations grounded in your exact numbers, and a run-by-run timeline. Not summaries. Not averages. The real story."
         visual={
           <div className="relative flex gap-4 items-start justify-center">
             <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}>
@@ -251,7 +251,7 @@ export default function Landing() {
                 <p className="text-[52px] font-bold text-ink mt-3 leading-none tracking-tight">$10</p>
                 <p className="text-muted text-[14px] mt-1.5">per month</p>
                 <ul className="mt-7 space-y-3 text-[14px] text-muted">
-                  {['Everything in Free', 'Unlimited uploads', 'Full AI coaching debrief', 'SlopeScore history + trends', 'Mountain Coach'].map(f => (
+                  {['Everything in Free', 'Unlimited uploads', 'Full coaching debrief', 'SlopeScore history + trends', 'Mountain Coach'].map(f => (
                     <li key={f} className="flex items-center gap-2.5">
                       <span className="w-4 h-4 rounded-full bg-coral/10 flex items-center justify-center text-[9px] text-coral font-bold shrink-0">✓</span>{f}
                     </li>

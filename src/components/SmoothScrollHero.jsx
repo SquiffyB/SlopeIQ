@@ -41,13 +41,13 @@ export default function SmoothScrollHero({
           style={{ opacity: textOpacity, y: textY }}
         >
           <p className="text-white/60 text-[12px] font-semibold tracking-[0.2em] uppercase mb-5">
-            AI Coaching for Skiers
+            Data-Driven Coaching
           </p>
           <h1 className="text-[56px] sm:text-[80px] lg:text-[96px] font-semibold leading-none tracking-tight text-white">
-            Your ski data,<br />finally useful.
+            Every run<br />tells a story.
           </h1>
           <p className="mt-7 text-white/70 text-[18px] sm:text-[20px] max-w-[480px] leading-relaxed">
-            Upload your Slopes session. Get coaching grounded in your own numbers — not generic tips.
+            SlopeIQ reads the numbers your sessions collect and turns them into something you can actually use.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link

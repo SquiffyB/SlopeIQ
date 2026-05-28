@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -7,22 +6,21 @@ export default function SmoothScrollHero({
   initialClipPercentage = 25,
   imageSrc = '/ski-hero.avif',
 }) {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
+  const { scrollY } = useScroll();
 
-  const clipLeft = useTransform(scrollYProgress, [0, 1], [initialClipPercentage, 0]);
-  const clipRight = useTransform(scrollYProgress, [0, 1], [100 - initialClipPercentage, 100]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1.7, 1]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.35], ['0%', '-12%']);
+  const end = scrollHeight;
+  const textEnd = scrollHeight * 0.3;
+
+  const clipLeft = useTransform(scrollY, [0, end], [initialClipPercentage, 0]);
+  const clipRight = useTransform(scrollY, [0, end], [100 - initialClipPercentage, 100]);
+  const scale = useTransform(scrollY, [0, end], [1.7, 1]);
+  const textOpacity = useTransform(scrollY, [0, textEnd], [1, 0]);
+  const textY = useTransform(scrollY, [0, textEnd], ['0%', '-14%']);
 
   const clipPath = useMotionTemplate`polygon(${clipLeft}% 0%, ${clipRight}% 0%, 100% 50%, ${clipRight}% 100%, ${clipLeft}% 100%, 0% 50%)`;
 
   return (
-    <div ref={containerRef} style={{ height: `calc(${scrollHeight}px + 100vh)` }}>
+    <div style={{ height: `calc(${scrollHeight}px + 100vh)` }}>
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Background image with clip + zoom */}
         <motion.div className="absolute inset-0" style={{ clipPath }}>

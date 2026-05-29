@@ -5,6 +5,7 @@ import './styles/globals.css';
 import Lenis from 'lenis';
 
 const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+window.__lenis = lenis; // expose so ScrollExpandMedia can pause/resume
 function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
 requestAnimationFrame(raf);
 

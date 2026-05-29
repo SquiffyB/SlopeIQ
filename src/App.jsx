@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import Navbar from './components/Navbar';
+import FloatingNav from './components/FloatingNav';
 import Footer from './components/Footer';
 import Landing from './pages/Landing';
 import HowItWorks from './pages/HowItWorks';
@@ -23,7 +23,7 @@ function ProtectedRoute({ children }) {
 function MarketingLayout({ children }) {
   return (
     <div className="min-h-screen bg-bg text-ink">
-      <Navbar />
+      <FloatingNav />
       {children}
       <Footer />
     </div>

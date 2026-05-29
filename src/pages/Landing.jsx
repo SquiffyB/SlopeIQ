@@ -232,159 +232,56 @@ function PersonaSection() {
   );
 }
 
-/* ──────────────────────────────────────────
-   TESTIMONIALS
-─────────────────────────────────────────── */
-const TESTIMONIALS = [
-  {
-    name: 'Jake M.',
-    handle: '@jakeski_vt',
-    date: 'Feb 2026',
-    text: 'Finally understand why I feel wrecked after day 3. The fatigue window prediction is scary accurate — SlopeIQ called it exactly right.',
-    resort: 'Stowe, VT',
-  },
-  {
-    name: 'Sarah K.',
-    handle: '@sarahr_ski',
-    date: 'Jan 2026',
-    text: 'Mountain Coach planned my whole Vail day around my session history. Hit every run at the right time. Zero bad decisions.',
-    resort: 'Vail, CO',
-  },
-  {
-    name: 'Tom W.',
-    handle: '@tomwski',
-    date: 'Dec 2025',
-    text: 'My SlopeScore went from 61 to 79 over the season. Watching the progression keeps me motivated to actually push myself.',
-    resort: 'Whistler, BC',
-  },
-  {
-    name: 'Mia R.',
-    handle: '@mia_onsnow',
-    date: 'Mar 2026',
-    text: 'I teach skiing and started running my own sessions through SlopeIQ. The run-by-run breakdown is unreal. I had no idea how inconsistent I was.',
-    resort: 'Park City, UT',
-  },
-  {
-    name: 'Dan B.',
-    handle: '@danbski',
-    date: 'Jan 2026',
-    text: 'Upload, get coaching, go back out. Takes 5 minutes. Way more useful than just staring at the Slopes stats screen.',
-    resort: 'Killington, VT',
-  },
-  {
-    name: 'Chris L.',
-    handle: '@clskiracer',
-    date: 'Feb 2026',
-    text: 'As someone who races NASTAR, the progression tracking is exactly what I needed. Actual data behind the improvement, not just vibes.',
-    resort: 'Mammoth, CA',
-  },
-];
-
-function TestimonialCard({ name, handle, date, text, resort }) {
-  return (
-    <div className="shrink-0 w-[300px] bg-surface rounded-2xl p-6 border border-line shadow-sm flex flex-col">
-      <div className="flex items-center gap-0.5 mb-4">
-        {[...Array(5)].map((_, i) => (
-          <svg key={i} className="w-3.5 h-3.5 text-[#F59E0B]" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-        ))}
-      </div>
-      <p className="text-[14px] text-muted leading-relaxed flex-1">"{text}"</p>
-      <div className="flex items-center justify-between mt-5 pt-5 border-t border-line">
-        <div>
-          <p className="text-[13px] font-semibold text-ink">{name}</p>
-          <p className="text-[11px] text-muted-2">{handle} · {resort}</p>
-        </div>
-        <p className="text-[11px] text-muted-2">{date}</p>
-      </div>
-    </div>
-  );
-}
-
-function TestimonialSection() {
-  return (
-    <section className="border-t border-line overflow-hidden py-24 bg-surface">
-      <div className="max-w-[1100px] mx-auto px-6 mb-14">
-        <InView>
-          <p className="eyebrow">Reviews</p>
-          <h2 className="text-[40px] sm:text-[52px] font-semibold tracking-tight mt-4 text-ink leading-[1.05]">
-            Loved by skiers<br />everywhere.
-          </h2>
-        </InView>
-      </div>
-      {/* Fade edges */}
-      <div className="relative">
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-20 z-10"
-          style={{ background: 'linear-gradient(to right, #FFFFFF, transparent)' }} />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-20 z-10"
-          style={{ background: 'linear-gradient(to left, #FFFFFF, transparent)' }} />
-        <motion.div
-          className="flex gap-5 px-6"
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 45, ease: 'linear', repeat: Infinity }}
-          style={{ width: 'max-content' }}
-        >
-          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
-            <TestimonialCard key={i} {...t} />
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 /* ──────────────────────────────────────────
    INTEGRATIONS
 ─────────────────────────────────────────── */
 const INTEGRATIONS = [
-  { name: 'Slopes App', dot: '#3898EC' },
-  { name: 'Apple Watch', dot: '#1F2025' },
-  { name: 'Garmin', dot: '#007CC2' },
-  { name: 'Strava', dot: '#FC4C02' },
-  { name: 'Whoop', dot: '#00D4AA' },
-  { name: 'Oura Ring', dot: '#2D2D2D' },
-  { name: 'Fitbit', dot: '#00B0B9' },
-  { name: 'Polar', dot: '#D00000' },
-  { name: 'Suunto', dot: '#1A1A1A' },
-  { name: 'Wahoo', dot: '#E5001B' },
+  { name: 'Slopes App', dot: '#3898EC', live: true },
+  { name: 'Apple Watch', dot: '#1F2025', live: false },
+  { name: 'Garmin', dot: '#007CC2', live: false },
 ];
 
 function IntegrationsSection() {
   return (
-    <section className="border-t border-line overflow-hidden py-24">
-      <div className="max-w-[1100px] mx-auto px-6 mb-14">
+    <section className="border-t border-line py-24">
+      <div className="max-w-[1100px] mx-auto px-6">
         <InView>
           <p className="eyebrow">Works with</p>
           <h2 className="text-[40px] sm:text-[52px] font-semibold tracking-tight mt-4 text-ink leading-[1.05]">
             Your gear, connected.
           </h2>
           <p className="mt-5 text-muted text-[17px] max-w-[440px] leading-relaxed">
-            Start with your Slopes sessions. More integrations with wearables and training platforms are on the way.
+            Import directly from Slopes App to get started. Apple Watch and Garmin support are on the way.
           </p>
         </InView>
-      </div>
-      <div className="relative">
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-20 z-10"
-          style={{ background: 'linear-gradient(to right, #F3F6F7, transparent)' }} />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-20 z-10"
-          style={{ background: 'linear-gradient(to left, #F3F6F7, transparent)' }} />
-        <motion.div
-          className="flex gap-3 px-6"
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 25, ease: 'linear', repeat: Infinity }}
-          style={{ width: 'max-content' }}
-        >
-          {[...INTEGRATIONS, ...INTEGRATIONS].map((item, i) => (
-            <div
-              key={i}
-              className="shrink-0 flex items-center gap-2.5 px-5 py-3 rounded-full border border-line bg-surface shadow-sm"
-            >
-              <span className="w-2 h-2 rounded-full shrink-0" style={{ background: item.dot }} />
-              <span className="text-[14px] font-semibold text-ink whitespace-nowrap">{item.name}</span>
-            </div>
+        <div className="mt-10 flex flex-wrap gap-3">
+          {INTEGRATIONS.map(item => (
+            <InView key={item.name}>
+              <div
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-full border shadow-sm transition-all ${
+                  item.live
+                    ? 'border-line bg-surface'
+                    : 'border-line/50 bg-surface/60 opacity-55'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: item.dot }} />
+                <span className={`text-[14px] font-semibold whitespace-nowrap ${item.live ? 'text-ink' : 'text-muted'}`}>
+                  {item.name}
+                </span>
+                {item.live ? (
+                  <span className="text-[10px] font-semibold text-[#3898EC] bg-[#3898EC]/10 px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                    Live
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-semibold text-muted-2 bg-black/[0.05] px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                    Soon
+                  </span>
+                )}
+              </div>
+            </InView>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -503,10 +400,10 @@ function CTASection() {
           `,
         }}
       />
-      {/* Ski image strip at top */}
-      <div className="absolute top-0 left-0 right-0 h-40 overflow-hidden opacity-20">
+      {/* Full-height ski image background */}
+      <div className="absolute inset-0 overflow-hidden opacity-25">
         <img src="/ski-hero.avif" alt="" className="w-full h-full object-cover object-center" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#151820]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#151820]/30 via-transparent to-[#151820]/60" />
       </div>
       <div className="relative max-w-[1100px] mx-auto px-6 py-32 sm:py-40 text-center">
         <InView>
@@ -542,14 +439,14 @@ function CTASection() {
 function HeroRevealContent() {
   const navigate = useNavigate();
   return (
-    <div className="text-center max-w-2xl mx-auto py-10 text-shadow">
-      <p className="text-white/60 text-[12px] font-semibold tracking-[0.2em] uppercase mb-5">
+    <div className="text-center max-w-2xl mx-auto py-10">
+      <p className="text-muted text-[12px] font-semibold tracking-[0.2em] uppercase mb-5">
         SlopeIQ
       </p>
-      <h2 className="text-[44px] sm:text-[62px] font-semibold leading-none tracking-tight text-white mb-6">
+      <h2 className="text-[44px] sm:text-[62px] font-semibold leading-none tracking-tight text-ink mb-6">
         Your ski data,<br />finally useful.
       </h2>
-      <p className="text-white/70 text-[18px] max-w-[440px] mx-auto leading-relaxed mb-10">
+      <p className="text-muted text-[18px] max-w-[440px] mx-auto leading-relaxed mb-10">
         Upload your Slopes session and get a complete breakdown grounded in your exact numbers.
       </p>
       <div className="flex flex-wrap gap-4 justify-center">
@@ -560,7 +457,7 @@ function HeroRevealContent() {
           How it works
         </MetalButton>
       </div>
-      <p className="text-white/40 text-[13px] mt-6">One free session. No credit card required.</p>
+      <p className="text-muted-2 text-[13px] mt-6">One free session. No credit card required.</p>
     </div>
   );
 }
@@ -575,7 +472,7 @@ export default function Landing() {
     <div>
       <ScrollExpandMedia
         mediaType="video"
-        mediaSrc="https://videos.pexels.com/video-files/4384957/4384957-hd_1920_1080_30fps.mp4"
+        mediaSrc="https://videos.pexels.com/video-files/4185219/4185219-uhd_2732_1440_24fps.mp4"
         posterSrc="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1920&q=85"
         bgImageSrc="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1920&q=85"
         title="Know Your Mountain"
@@ -635,8 +532,6 @@ export default function Landing() {
         tinted
         visual={<SlopeScoreDisplay score={78} trend={3} dimensions={DIMS} tier="pro" size={240} />}
       />
-
-      <TestimonialSection />
 
       <IntegrationsSection />
 

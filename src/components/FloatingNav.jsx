@@ -82,7 +82,7 @@ export default function FloatingNav() {
             style={{
               background: overHero
                 ? 'rgba(255,255,255,0.18)'
-                : 'rgba(255,255,255,0.80)',
+                : 'rgba(248,251,255,0.88)',
               boxShadow: overHero
                 ? [
                     '0 0 0 1px rgba(255,255,255,0.35)',
@@ -92,12 +92,12 @@ export default function FloatingNav() {
                     'inset 0 -1px 0 rgba(0,0,0,0.08)',
                   ].join(', ')
                 : [
-                    '0 0 0 1px rgba(255,255,255,0.95)',
-                    '0 0 0 1.5px rgba(0,0,0,0.07)',
-                    '0 4px 24px rgba(0,0,0,0.09)',
-                    '0 1px 4px rgba(0,0,0,0.04)',
+                    '0 0 0 1px rgba(0,0,0,0.10)',
+                    '0 0 0 2.5px rgba(255,255,255,0.80)',
+                    '0 8px 32px rgba(0,0,0,0.13)',
+                    '0 2px 8px rgba(0,0,0,0.07)',
                     'inset 0 1.5px 0 rgba(255,255,255,1)',
-                    'inset 0 -1px 0 rgba(0,0,0,0.04)',
+                    'inset 0 -1px 0 rgba(0,0,0,0.06)',
                   ].join(', '),
             }}
           >

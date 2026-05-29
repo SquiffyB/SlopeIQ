@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SlopeScoreDisplay from '../components/SlopeScoreDisplay';
-import SmoothScrollHero from '../components/SmoothScrollHero';
+import ScrollExpandMedia from '../components/ScrollExpandMedia';
+import { LiquidButton, MetalButton } from '@/components/ui/button';
 
 function InView({ children, className, delay = 0 }) {
   return (
@@ -517,23 +518,50 @@ function CTASection() {
             Join skiers who finally know what their numbers mean.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/signup"
-              className="inline-flex items-center justify-center px-10 py-4 bg-white text-ink font-semibold text-[16px] rounded-full hover:bg-white/90 transition-colors"
-            >
-              Create your free account
+            <Link to="/signup">
+              <LiquidButton size="xl" className="text-white font-semibold">
+                Create your free account
+              </LiquidButton>
             </Link>
-            <Link
-              to="/how-it-works"
-              className="inline-flex items-center justify-center px-10 py-4 bg-white/10 text-white font-semibold text-[16px] rounded-full hover:bg-white/15 transition-colors border border-white/15"
-            >
-              How it works
+            <Link to="/how-it-works">
+              <LiquidButton size="xl" className="text-white/80 font-semibold">
+                How it works
+              </LiquidButton>
             </Link>
           </div>
           <p className="mt-6 text-white/30 text-[13px]">One free session. No credit card required.</p>
         </InView>
       </div>
     </section>
+  );
+}
+
+/* ──────────────────────────────────────────
+   HERO REVEAL (shown after video expands)
+─────────────────────────────────────────── */
+function HeroRevealContent() {
+  const navigate = useNavigate();
+  return (
+    <div className="text-center max-w-2xl mx-auto py-10 text-shadow">
+      <p className="text-white/60 text-[12px] font-semibold tracking-[0.2em] uppercase mb-5">
+        SlopeIQ
+      </p>
+      <h2 className="text-[44px] sm:text-[62px] font-semibold leading-none tracking-tight text-white mb-6">
+        Your ski data,<br />finally useful.
+      </h2>
+      <p className="text-white/70 text-[18px] max-w-[440px] mx-auto leading-relaxed mb-10">
+        Upload your Slopes session and get a complete breakdown grounded in your exact numbers.
+      </p>
+      <div className="flex flex-wrap gap-4 justify-center">
+        <MetalButton variant="gold" onClick={() => navigate('/signup')}>
+          Get started free
+        </MetalButton>
+        <MetalButton variant="default" onClick={() => navigate('/how-it-works')}>
+          How it works
+        </MetalButton>
+      </div>
+      <p className="text-white/40 text-[13px] mt-6">One free session. No credit card required.</p>
+    </div>
   );
 }
 
@@ -545,7 +573,17 @@ const DIMS = { consistency: 72, fatigue: 88, vertical: 65, progression: 55, reco
 export default function Landing() {
   return (
     <div>
-      <SmoothScrollHero />
+      <ScrollExpandMedia
+        mediaType="video"
+        mediaSrc="https://videos.pexels.com/video-files/4384957/4384957-hd_1920_1080_30fps.mp4"
+        posterSrc="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1920&q=85"
+        bgImageSrc="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1920&q=85"
+        title="Know Your Mountain"
+        scrollToExpand="↓ Scroll to expand"
+        textBlend={false}
+      >
+        <HeroRevealContent />
+      </ScrollExpandMedia>
 
       <Marquee />
 

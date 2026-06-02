@@ -3,9 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const NAV_LINKS = [
-  { to: '/how-it-works', label: 'Features'  },
-  { to: '/pricing',      label: 'Pricing'   },
-  { to: '/about',        label: 'About'     },
+  { to: '/',             label: 'Home'         },
+  { to: '/how-it-works', label: 'How It Works' },
 ];
 
 export default function FloatingNav() {
@@ -59,21 +58,13 @@ export default function FloatingNav() {
             Dashboard
           </Link>
         ) : (
-          <>
-            <Link
-              to="/login"
-              className="hidden sm:block text-[13px] font-medium text-muted hover:text-ink transition-colors"
-            >
-              Log in
-            </Link>
-            <a
-              href="#download"
-              className="text-[13px] font-semibold px-4 py-2 rounded-full text-white transition-all"
-              style={{ background: '#1B76DC', boxShadow: '0 2px 10px rgba(27,118,220,0.35)' }}
-            >
-              Download
-            </a>
-          </>
+          <a
+            href="#download"
+            className="text-[13px] font-semibold px-4 py-2 rounded-full text-white transition-all"
+            style={{ background: '#1B76DC', boxShadow: '0 2px 10px rgba(27,118,220,0.35)' }}
+          >
+            Download
+          </a>
         )}
       </div>
     </header>

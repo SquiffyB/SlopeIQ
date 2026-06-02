@@ -2,94 +2,116 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; }
+:root { color-scheme: light dark; }
 
 html, body {
-  background-color: #F8FAFF;
-  color: #090C14;
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background-color: #F2F2F0;
+  color: #0D0E14;
+  font-family: 'Barlow', Helvetica Neue, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body { min-height: 100vh; }
 
-::selection { background: rgba(0,87,255,0.12); color: #090C14; }
+::selection { background: rgba(0,87,255,0.14); color: #0D0E14; }
 
-/* Eyebrow */
-.eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #0057FF;
-  font-weight: 600;
-  font-family: 'Space Mono', monospace;
-}
-
-/* Text shadow for overlays */
-.text-shadow    { text-shadow: 0 2px 24px rgba(0,0,0,0.55), 0 1px 6px rgba(0,0,0,0.35); }
-.text-shadow-sm { text-shadow: 0 1px 8px rgba(0,0,0,0.4); }
-
-/* Buttons */
+/* Buttons — light context */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.75rem;
-  background-color: #0057FF;
-  color: #FFFFFF;
-  border-radius: 9999px;
+  padding: 0.75rem 1.75rem;
+  background: #0D0E14;
+  color: #F2F2F0;
+  border-radius: 4px;
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: 0.01em;
+  font-family: 'Barlow', sans-serif;
+  letter-spacing: 0.02em;
   border: none;
   cursor: pointer;
-  transition: background-color 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+  transition: background 0.18s ease, transform 0.15s ease;
   text-decoration: none;
-  font-family: 'Space Grotesk', sans-serif;
 }
-.btn-primary:hover {
-  background-color: #0044CC;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(0,87,255,0.28);
-}
-.btn-primary:active { transform: translateY(0); box-shadow: none; }
-.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-primary:hover { background: #1C1E28; transform: translateY(-1px); }
+.btn-primary:active { transform: none; }
 
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.8rem 1.75rem;
+  padding: 0.75rem 1.75rem;
   background: transparent;
-  color: #090C14;
-  border: 1.5px solid rgba(9,12,20,0.18);
-  border-radius: 9999px;
+  color: #0D0E14;
+  border: 1.5px solid rgba(13,14,20,0.22);
+  border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
+  font-family: 'Barlow', sans-serif;
   cursor: pointer;
   transition: border-color 0.18s ease, background 0.18s ease;
   text-decoration: none;
-  font-family: 'Space Grotesk', sans-serif;
 }
-.btn-ghost:hover {
-  border-color: rgba(9,12,20,0.35);
-  background: rgba(9,12,20,0.04);
+.btn-ghost:hover { border-color: rgba(13,14,20,0.5); background: rgba(13,14,20,0.04); }
+
+/* Buttons — dark context */
+.btn-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: #EFEFED;
+  color: #0D0E14;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: 'Barlow', sans-serif;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.15s ease;
+  text-decoration: none;
+}
+.btn-white:hover { background: #FFFFFF; transform: translateY(-1px); }
+
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.75rem;
+  background: transparent;
+  color: rgba(239,239,237,0.85);
+  border: 1.5px solid rgba(239,239,237,0.25);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Barlow', sans-serif;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+  text-decoration: none;
+}
+.btn-outline-white:hover {
+  border-color: rgba(239,239,237,0.55);
+  color: #EFEFED;
+  background: rgba(239,239,237,0.06);
 }
 
 /* Cards */
 .card {
-  background-color: #FFFFFF;
-  border: 1px solid rgba(9,12,20,0.08);
-  border-radius: 16px;
+  background: #FFFFFF;
+  border: 1px solid rgba(13,14,20,0.08);
+  border-radius: 8px;
 }
 
 /* Upload zone */
 .upload-zone {
-  border: 1.5px dashed rgba(9,12,20,0.18);
-  border-radius: 20px;
+  border: 1.5px dashed rgba(13,14,20,0.18);
+  border-radius: 12px;
   background: rgba(255,255,255,0.8);
   transition: border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
 }
@@ -99,11 +121,8 @@ body { min-height: 100vh; }
   box-shadow: 0 0 28px rgba(0,87,255,0.08);
 }
 
-/* Stagger animation */
-.stagger > * {
-  opacity: 0;
-  animation: fade-up 0.6s ease-out forwards;
-}
+/* Stagger */
+.stagger > * { opacity: 0; animation: fade-up 0.6s ease-out forwards; }
 .stagger > *:nth-child(1) { animation-delay: 0.05s; }
 .stagger > *:nth-child(2) { animation-delay: 0.15s; }
 .stagger > *:nth-child(3) { animation-delay: 0.25s; }
@@ -116,18 +135,13 @@ body { min-height: 100vh; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Divider */
-.divider { height: 1px; background: rgba(9,12,20,0.08); width: 100%; }
+.divider { height: 1px; background: rgba(13,14,20,0.08); width: 100%; }
+.divider-dark { height: 1px; background: rgba(239,239,237,0.08); width: 100%; }
 
-/* Scrollbar */
-.scrollbar-thin { scrollbar-width: thin; scrollbar-color: rgba(9,12,20,0.14) transparent; }
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: rgba(13,14,20,0.14) transparent; }
 .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
-.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(9,12,20,0.14); border-radius: 999px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(13,14,20,0.14); border-radius: 999px; }
 
-/* Mono data values */
-.mono { font-family: 'Space Mono', monospace; }
-
-/* Chat bounce dots */
 span.animate-bounce { animation: bounce-dot 1.2s ease-in-out infinite; }
 span:nth-child(2).animate-bounce { animation-delay: 0.15s; }
 span:nth-child(3).animate-bounce { animation-delay: 0.3s; }

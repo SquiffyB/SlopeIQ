@@ -11,13 +11,16 @@ const NAV_LINKS = [
 export default function FloatingNav() {
   const { user } = useAuth();
   const { pathname } = useLocation();
-  const [onDark, setOnDark] = useState(true);
+  const isLanding = pathname === '/';
+  const [onDark, setOnDark] = useState(isLanding);
 
   useEffect(() => {
-    const check = () => {
-      // Hero is 100vh — switch appearance once past 85% of viewport height
-      setOnDark(window.scrollY < window.innerHeight * 0.85);
-    };
+    if (!isLanding) {
+      setOnDark(false);
+      return;
+    }
+    // Only on the landing page: switch at the hero boundary (100vh dark video)
+    const check = () => setOnDark(window.scrollY < window.innerHeight * 0.85);
     check();
     window.addEventListener('scroll', check, { passive: true });
     window.addEventListener('resize', check, { passive: true });
@@ -25,7 +28,7 @@ export default function FloatingNav() {
       window.removeEventListener('scroll', check);
       window.removeEventListener('resize', check);
     };
-  }, []);
+  }, [isLanding]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center h-[64px] px-6 sm:px-10 pointer-events-none">

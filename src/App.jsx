@@ -8,6 +8,7 @@ import Pricing from './pages/Pricing';
 import About from './pages/About';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import EmailConfirmation from './pages/EmailConfirmation';
 import DashboardLayout from './pages/dashboard/Layout';
 import Debrief from './pages/dashboard/Debrief';
 import Coach from './pages/dashboard/Coach';
@@ -39,6 +40,7 @@ function AppRoutes() {
       <Route path="/about" element={<MarketingLayout><About /></MarketingLayout>} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/emailconfirmation" element={<EmailConfirmation />} />
       <Route
         path="/dashboard"
         element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}

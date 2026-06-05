@@ -98,7 +98,7 @@ export default async function handler(req, res) {
           'HTTP-Referer': 'https://slopeiq.com',
           'X-Title': 'SlopeIQ',
         },
-        body: JSON.stringify({ model: 'anthropic/claude-sonnet-4-5', max_tokens: 1500, messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: prompt }] }),
+        body: JSON.stringify({ model: 'deepseek/deepseek-chat', max_tokens: 1500, messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: prompt }] }),
       });
       const data = await aiRes.json();
       const text = data?.choices?.[0]?.message?.content || '';

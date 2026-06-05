@@ -100,7 +100,7 @@ export const handler = async (event) => {
           'X-Title': 'SlopeIQ',
         },
         body: JSON.stringify({
-          model: 'anthropic/claude-sonnet-4-5',
+          model: 'deepseek/deepseek-chat',
           max_tokens: 1500,
           messages: [
             { role: 'system', content: SYSTEM_PROMPT },

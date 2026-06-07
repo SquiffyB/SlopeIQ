@@ -5,10 +5,11 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 /* ─────────────────────────────────────────────────────────────
    SHARED UTILITIES
 ───────────────────────────────────────────────────────────── */
-function Reveal({ children, className, delay = 0, y = 28 }) {
+function Reveal({ children, className, delay = 0, y = 28, style }) {
   return (
     <motion.div
       className={className}
+      style={style}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.12 }}
@@ -19,21 +20,19 @@ function Reveal({ children, className, delay = 0, y = 28 }) {
   );
 }
 
-function StatusBar({ dark = true }) {
-  const c = dark ? 'rgba(255,255,255,0.5)' : 'rgba(13,14,20,0.45)';
-  return (
-    <div className="flex justify-between items-center px-5 pt-14 pb-1 text-[9px] font-semibold" style={{ color: c }}>
-      <span>9:41</span>
-      <span>●●●● WiFi</span>
-    </div>
-  );
-}
-
 const BLUE = '#1B76DC';
 const DARK_BG = '#0D0E14';
-const LIGHT_BG = '#F5F5F3';
 const INK = '#0B2039';
 const MUTED = '#52546A';
+
+// App light-theme palette (matches the iOS app exactly)
+const APP_BG = '#F5F5F3';
+const SURF = '#FFFFFF';
+const FAINT = '#8A93A3';
+const LINE = 'rgba(11,32,57,0.08)';
+const SUBTLE = 'rgba(11,32,57,0.04)';
+const ACCLT = '#E7F0FB';
+const GOOD = '#1B9E6B';
 
 /* ─────────────────────────────────────────────────────────────
    APP STORE BUTTON
@@ -87,556 +86,333 @@ function IPhone({ children, width = 260 }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   DEBRIEF SCREENS — three distinct views
+   APP CHROME — matches the real app's top date-nav + bottom dock
 ───────────────────────────────────────────────────────────── */
-
-// Tab 0: Session stats — big numbers front and center
-function DebriefScreenStats() {
+function StatusBar() {
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: DARK_BG, fontFamily: "'Barlow', sans-serif", color: 'white' }}>
-      <StatusBar dark />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[11px] text-white/30">← Sessions</p>
-        <p className="text-[18px] font-bold mt-1">Killington</p>
-        <p className="text-[10px] text-white/30 mt-0.5">Jan 18 · 14 runs · 4h 22m</p>
-      </div>
-      {/* Stats highlighted */}
-      <div className="mx-3 rounded-2xl p-4 mb-3" style={{ background: 'rgba(27,118,220,0.14)', border: `1px solid ${BLUE}40` }}>
-        <p className="text-[8px] tracking-widest uppercase mb-3" style={{ color: BLUE }}>Session stats</p>
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          {[['34.2', 'mph', 'Top speed'], ['18.4k', 'ft', 'Vertical'], ['14', '', 'Runs']].map(([v, u, l]) => (
-            <div key={l} className="bg-white/[0.07] rounded-xl p-2.5">
-              <p className="text-[17px] font-bold leading-none">{v}<span className="text-[9px] text-white/40 ml-0.5">{u}</span></p>
-              <p className="text-[9px] text-white/30 mt-1">{l}</p>
-            </div>
-          ))}
+    <div className="flex justify-between items-center px-5 pt-3 pb-0.5 text-[9px] font-semibold" style={{ color: INK }}>
+      <span>9:41</span>
+      <span style={{ color: 'rgba(11,32,57,0.55)' }}>●●● 􀙇</span>
+    </div>
+  );
+}
+
+function AppHeader({ date = 'Feb 14', activeIdx = 3, marked = [1, 3] }) {
+  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  return (
+    <div style={{ background: APP_BG }}>
+      <StatusBar />
+      <div className="flex items-center justify-between px-4 pt-1 pb-2">
+        <div className="flex items-center gap-1">
+          <span className="text-[18px] font-bold" style={{ color: INK }}>{date}</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={INK} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
         </div>
-        <div className="grid grid-cols-3 gap-2">
-          {[['4:22', 'hr', 'Ski time'], ['3,200', 'ft/hr', 'Vert rate'], ['28.1', 'mph', 'Avg speed']].map(([v, u, l]) => (
-            <div key={l} className="bg-white/[0.05] rounded-xl p-2.5">
-              <p className="text-[15px] font-bold leading-none">{v}<span className="text-[8px] text-white/35 ml-0.5">{u}</span></p>
-              <p className="text-[9px] text-white/25 mt-1">{l}</p>
-            </div>
-          ))}
+        <div className="rounded-full flex items-center justify-center" style={{ width: 28, height: 28, border: `1px solid ${LINE}`, background: SUBTLE }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.5" /><path d="M5.5 20a6.5 6.5 0 0 1 13 0" /></svg>
         </div>
       </div>
-      <div className="mx-3 bg-white/[0.04] rounded-xl p-3 flex items-center justify-between">
-        <div>
-          <p className="text-[8px] tracking-widest uppercase text-white/20 mb-0.5">SlopeScore</p>
-          <p className="text-[26px] font-bold leading-none">78</p>
-        </div>
-        <p className="text-[15px] font-bold" style={{ color: BLUE }}>+3 ↑</p>
+      <div className="flex justify-between px-3 pb-3">
+        {days.map((d, i) => {
+          const sel = i === activeIdx;
+          const has = marked.includes(i);
+          const fill = sel || has;
+          return (
+            <div key={i} className="flex flex-col items-center gap-1" style={{ width: '13.5%' }}>
+              <span className="text-[8px] font-semibold" style={{ color: FAINT }}>{d}</span>
+              <div className="rounded-full flex items-center justify-center" style={{ width: 22, height: 22, background: fill ? BLUE : 'transparent', border: sel ? `2px solid ${BLUE}` : `1px solid ${LINE}`, opacity: i > activeIdx ? 0.4 : 1 }}>
+                {fill && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="5 12 10 17 19 7" /></svg>}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-// Tab 1: Coached debrief — observations as the hero
-function DebriefScreenCoach() {
-  const obs = [
-    { icon: '⬇', text: 'Speed dropped 18% between runs 7–10. Classic mid-session fade. Plan a break after run 8.' },
-    { icon: '⚡', text: 'Peak vertical rate: 3,200 ft/hr before run 6. Your morning window is your strongest.' },
-    { icon: '🎯', text: 'Fatigue window hit at run 9 — matching your 3-session average at this mountain.' },
-    { icon: '📈', text: 'Consistency score 72/100. Run length variance is high; longer runs improve it.' },
-  ];
+function TabIcon({ name, color }) {
+  const p = { fill: 'none', stroke: color, strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' };
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: DARK_BG, fontFamily: "'Barlow', sans-serif", color: 'white' }}>
-      <StatusBar dark />
-      <div className="px-4 pt-1 pb-3 flex items-center justify-between">
-        <div>
-          <p className="text-[11px] text-white/30">Killington · Jan 18</p>
-          <div className="flex gap-3 mt-1">
-            {['34.2mph', '18.4k ft', '14 runs'].map(s => (
-              <span key={s} className="text-[10px] text-white/40">{s}</span>
-            ))}
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-[8px] text-white/25 uppercase tracking-wider">Score</p>
-          <p className="text-[20px] font-bold" style={{ color: BLUE }}>78</p>
-        </div>
-      </div>
-      {/* Observations highlighted */}
-      <div className="mx-3 rounded-2xl p-3 mb-1" style={{ background: 'rgba(27,118,220,0.12)', border: `1px solid ${BLUE}35` }}>
-        <p className="text-[8px] tracking-widest uppercase mb-2.5" style={{ color: BLUE }}>Coaching observations · 7 total</p>
-        <div className="space-y-2">
-          {obs.map((o, i) => (
-            <div key={i} className="bg-white/[0.05] rounded-xl p-2.5 flex gap-2">
-              <span className="text-[11px] shrink-0 mt-0.5">{o.icon}</span>
-              <p className="text-[11px] text-white/60 leading-snug">{o.text}</p>
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      {name === 'debrief' && <><line x1="5" y1="20" x2="5" y2="13" {...p} /><line x1="12" y1="20" x2="12" y2="5" {...p} /><line x1="19" y1="20" x2="19" y2="10" {...p} /></>}
+      {name === 'score' && <><circle cx="12" cy="12" r="9" {...p} /><circle cx="12" cy="12" r="4" {...p} /><circle cx="12" cy="12" r="1.4" fill={color} stroke="none" /></>}
+      {name === 'coach' && <path d="M21 11.5a8.5 8.5 0 0 1-12.2 7.6L3 21l1.9-5.8A8.5 8.5 0 1 1 21 11.5z" {...p} />}
+    </svg>
+  );
+}
+
+function AppTabBar({ active = 'debrief' }) {
+  const tabs = [['debrief', 'Debrief'], ['score', 'Score'], ['coach', 'Coach']];
+  return (
+    <div className="absolute left-0 right-0 flex justify-center" style={{ bottom: 10 }}>
+      <div className="flex px-2 py-2 rounded-[22px]" style={{ width: '86%', background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.8)', boxShadow: '0 10px 30px rgba(11,32,57,0.16)' }}>
+        {tabs.map(([k, label]) => {
+          const on = k === active;
+          return (
+            <div key={k} className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-[16px]" style={{ background: on ? 'rgba(11,32,57,0.06)' : 'transparent' }}>
+              <TabIcon name={k} color={on ? BLUE : 'rgba(11,32,57,0.45)'} />
+              <span className="text-[9px]" style={{ color: on ? BLUE : 'rgba(11,32,57,0.5)', fontWeight: on ? 700 : 500 }}>{label}</span>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-// Tab 2: Run timeline — every run listed
-function DebriefScreenTimeline() {
-  const runs = [
-    { n: 1,  t: '09:02', s: '34.2', v: '1,240', hi: false },
-    { n: 2,  t: '09:18', s: '32.8', v: '980',   hi: false },
-    { n: 3,  t: '09:35', s: '33.1', v: '1,100', hi: false },
-    { n: 4,  t: '09:52', s: '30.4', v: '890',   hi: false },
-    { n: 5,  t: '10:12', s: '31.2', v: '1,020', hi: false },
-    { n: 6,  t: '10:31', s: '29.8', v: '860',   hi: false },
-    { n: 7,  t: '10:52', s: '28.6', v: '780',   hi: false },
-    { n: 8,  t: '11:10', s: '27.4', v: '720',   hi: false },
-    { n: 9,  t: '11:30', s: '27.8', v: '810',   hi: true  },
-    { n: 10, t: '11:52', s: '28.1', v: '750',   hi: false },
-  ];
+// Phone screen shell — app background, persistent header, floating dock.
+function Screen({ active, header = true, children }) {
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: DARK_BG, fontFamily: "'Barlow', sans-serif", color: 'white' }}>
-      <StatusBar dark />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[11px] text-white/30">Killington · Jan 18</p>
-        <p className="text-[16px] font-bold mt-0.5">Run Timeline</p>
-      </div>
-      <div className="mx-3 rounded-xl overflow-hidden mb-2" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="grid grid-cols-4 px-3 py-2 text-[8px] tracking-widest uppercase text-white/20 border-b border-white/[0.05]">
-          <span>Run</span><span>Time</span><span>Speed</span><span>Vertical</span>
-        </div>
-        {runs.map(r => (
-          <div key={r.n} className={`grid grid-cols-4 px-3 py-2 border-b border-white/[0.04] last:border-0 ${r.hi ? 'rounded-md' : ''}`}
-            style={r.hi ? { background: 'rgba(27,118,220,0.18)' } : {}}>
-            <span className="text-[11px] font-bold text-white/60">{r.n}</span>
-            <span className="text-[10px] text-white/35">{r.t}</span>
-            <span className="text-[11px] font-semibold" style={{ color: r.hi ? BLUE : 'white' }}>{r.s}<span className="text-[8px] text-white/30 ml-0.5">mph</span></span>
-            <span className="text-[10px] text-white/45">{r.v}<span className="text-[8px] text-white/25 ml-0.5">ft</span></span>
-          </div>
-        ))}
-      </div>
-      <p className="px-4 text-[9px] text-white/20">↑ Run 9 — fatigue window detected</p>
+    <div className="w-full h-full relative overflow-hidden" style={{ background: APP_BG, fontFamily: "'Barlow', sans-serif" }}>
+      {header ? <AppHeader /> : <StatusBar />}
+      <div style={{ paddingBottom: 72 }}>{children}</div>
+      <AppTabBar active={active} />
+    </div>
+  );
+}
+
+function ResortHead({ resort = 'Jackson Hole', date = 'February 14, 2024' }) {
+  return (
+    <div className="px-4 pt-1 pb-2">
+      <p className="text-[17px] font-bold leading-tight" style={{ color: INK }}>{resort}</p>
+      <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>{date}</p>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   SCORE SCREENS — three distinct views
+   DEBRIEF SCREENS
 ───────────────────────────────────────────────────────────── */
-
-// Tab 0: The score ring, large
-function ScoreScreenGauge() {
-  const C = 2 * Math.PI * 52;
+function DebriefStats() {
+  const stats = [['Avg speed', '23.8', 'mph'], ['Top speed', '47.6', 'mph'], ['Runs', '11', ''], ['Distance', '18.2', 'mi'], ['Lift time', '1h 05m', ''], ['Avg vertical', '1,985', 'ft']];
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: LIGHT_BG, fontFamily: "'Barlow', sans-serif" }}>
-      <StatusBar dark={false} />
-      <div className="px-4 pt-1 pb-2">
-        <p className="text-[18px] font-bold" style={{ color: INK }}>SlopeScore</p>
-        <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>Killington · Jan 18</p>
-      </div>
-      <div className="flex justify-center my-2">
-        <div className="relative flex items-center justify-center" style={{ width: 160, height: 160 }}>
-          <svg viewBox="-80 -80 160 160" className="absolute inset-0 w-full h-full">
-            <circle cx="0" cy="0" r="52" fill="none" stroke="rgba(13,14,20,0.07)" strokeWidth="9" />
-            <circle cx="0" cy="0" r="52" fill="none" stroke={BLUE} strokeWidth="9"
-              strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * 0.22} transform="rotate(-90)" />
-            {Array.from({ length: 32 }, (_, i) => {
-              const a = (-90 + i * 11.25) * Math.PI / 180;
-              return <line key={i} x1={Math.cos(a) * 57} y1={Math.sin(a) * 57} x2={Math.cos(a) * 61} y2={Math.sin(a) * 61} stroke="rgba(13,14,20,0.08)" strokeWidth="1" />;
-            })}
-          </svg>
-          <div className="text-center z-10">
-            <p className="text-[42px] font-bold leading-none" style={{ color: INK }}>78</p>
-            <p className="text-[12px] font-semibold mt-0.5" style={{ color: BLUE }}>+3 today</p>
-          </div>
-        </div>
-      </div>
-      <div className="mx-4 grid grid-cols-2 gap-2 mb-3">
-        {[['Season best', '78'], ['Season low', '62'], ['Sessions', '6'], ['Avg score', '72']].map(([l, v]) => (
-          <div key={l} className="bg-white rounded-xl p-3" style={{ boxShadow: '0 1px 4px rgba(13,14,20,0.07)' }}>
-            <p className="text-[9px] uppercase tracking-wider mb-1" style={{ color: MUTED }}>{l}</p>
-            <p className="text-[20px] font-bold leading-none" style={{ color: INK }}>{v}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// Tab 1: Season trend — full chart
-function ScoreScreenTrend() {
-  const data = [
-    { score: 62, label: 'Dec 15', resort: 'Okemo' },
-    { score: 65, label: 'Dec 20', resort: 'Okemo' },
-    { score: 68, label: 'Dec 28', resort: 'Sugarbush' },
-    { score: 65, label: 'Jan 4',  resort: 'Stowe' },
-    { score: 71, label: 'Jan 11', resort: 'Stowe' },
-    { score: 74, label: 'Jan 15', resort: 'Killington' },
-    { score: 78, label: 'Jan 18', resort: 'Killington' },
-  ];
-  const max = 90, min = 55;
-  const range = max - min;
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: LIGHT_BG, fontFamily: "'Barlow', sans-serif" }}>
-      <StatusBar dark={false} />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[18px] font-bold" style={{ color: INK }}>Season Trend</p>
-        <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>7 sessions · 2025–26</p>
-      </div>
-      {/* Chart */}
-      <div className="mx-4 bg-white rounded-2xl p-4 mb-3" style={{ boxShadow: '0 1px 6px rgba(13,14,20,0.07)' }}>
-        <div className="relative" style={{ height: 100 }}>
-          <svg viewBox={`0 0 ${data.length * 36} 100`} className="w-full h-full overflow-visible">
-            {/* Grid lines */}
-            {[65, 70, 75, 80].map(v => {
-              const y = 100 - ((v - min) / range) * 90;
-              return <g key={v}><line x1="0" y1={y} x2={data.length * 36} y2={y} stroke="rgba(13,14,20,0.06)" strokeWidth="1" /><text x="0" y={y - 2} fontSize="7" fill="rgba(13,14,20,0.3)">{v}</text></g>;
-            })}
-            {/* Line */}
-            <polyline
-              fill="none" stroke={BLUE} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"
-              points={data.map((d, i) => `${i * 36 + 18},${100 - ((d.score - min) / range) * 90}`).join(' ')}
-            />
-            {/* Area fill */}
-            <polygon
-              fill={`${BLUE}18`}
-              points={[
-                ...data.map((d, i) => `${i * 36 + 18},${100 - ((d.score - min) / range) * 90}`),
-                `${(data.length - 1) * 36 + 18},100`, `18,100`,
-              ].join(' ')}
-            />
-            {/* Dots */}
-            {data.map((d, i) => (
-              <circle key={i} cx={i * 36 + 18} cy={100 - ((d.score - min) / range) * 90} r={i === data.length - 1 ? 4.5 : 3}
-                fill={i === data.length - 1 ? BLUE : 'white'} stroke={BLUE} strokeWidth="2" />
-            ))}
-          </svg>
-        </div>
-        <div className="flex justify-between mt-2">
-          {data.map((d, i) => (
-            <div key={i} className="text-center" style={{ width: 36 }}>
-              <p className="text-[8px] leading-none" style={{ color: i === data.length - 1 ? BLUE : MUTED }}>{d.label.split(' ')[1]}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="mx-4 flex items-center justify-between bg-white rounded-xl px-4 py-3" style={{ boxShadow: '0 1px 4px rgba(13,14,20,0.06)' }}>
-        <div>
-          <p className="text-[9px] uppercase tracking-wider mb-0.5" style={{ color: MUTED }}>Season improvement</p>
-          <p className="text-[22px] font-bold leading-none" style={{ color: INK }}>+16 pts</p>
-        </div>
-        <p className="text-[24px] font-bold" style={{ color: BLUE }}>↑</p>
-      </div>
-    </div>
-  );
-}
-
-// Tab 2: Dimension breakdown
-function ScoreScreenBreakdown() {
-  const dims = [
-    { label: 'Fatigue Mgmt', v: 88, delta: '+5' },
-    { label: 'Consistency',  v: 72, delta: '+2' },
-    { label: 'Recovery',     v: 80, delta: '+4' },
-    { label: 'Vertical Rate',v: 65, delta: '+1' },
-    { label: 'Speed',        v: 62, delta: '—'  },
-  ];
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: LIGHT_BG, fontFamily: "'Barlow', sans-serif" }}>
-      <StatusBar dark={false} />
-      <div className="px-4 pt-1 pb-3 flex items-center justify-between">
-        <div>
-          <p className="text-[18px] font-bold" style={{ color: INK }}>Breakdown</p>
-          <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>SlopeScore 78 · Jan 18</p>
-        </div>
-        <div className="relative flex items-center justify-center" style={{ width: 52, height: 52 }}>
-          <svg viewBox="-26 -26 52 52" className="absolute inset-0 w-full h-full">
-            <circle cx="0" cy="0" r="20" fill="none" stroke="rgba(13,14,20,0.07)" strokeWidth="4" />
-            <circle cx="0" cy="0" r="20" fill="none" stroke={BLUE} strokeWidth="4"
-              strokeLinecap="round" strokeDasharray={2 * Math.PI * 20} strokeDashoffset={2 * Math.PI * 20 * 0.22} transform="rotate(-90)" />
-          </svg>
-          <p className="text-[13px] font-bold z-10" style={{ color: INK }}>78</p>
-        </div>
-      </div>
-      <div className="px-4 flex-1 space-y-3">
-        {dims.map(({ label, v, delta }) => (
-          <div key={label}>
-            <div className="flex justify-between items-baseline mb-1">
-              <span className="text-[12px] font-medium" style={{ color: INK }}>{label}</span>
-              <div className="flex items-baseline gap-2">
-                <span className="text-[10px]" style={{ color: MUTED }}>{delta}</span>
-                <span className="text-[14px] font-bold" style={{ color: INK }}>{v}</span>
-              </div>
-            </div>
-            <div className="h-2 rounded-full" style={{ background: 'rgba(13,14,20,0.07)' }}>
-              <div className="h-full rounded-full" style={{ width: `${v}%`, background: v >= 80 ? BLUE : v >= 70 ? `${BLUE}CC` : `${BLUE}88` }} />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="mx-4 mb-4 mt-3 bg-white rounded-xl p-3" style={{ boxShadow: '0 1px 4px rgba(13,14,20,0.06)' }}>
-        <p className="text-[10px]" style={{ color: MUTED }}>Weakest dimension: <span className="font-semibold" style={{ color: INK }}>Speed (62)</span> — more aggressive run selection could help.</p>
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   COACH SCREENS — three distinct views
-───────────────────────────────────────────────────────────── */
-
-// Tab 0: The day plan board
-function CoachScreenPlan() {
-  const plan = [
-    { time: '09:00', run: 'Rime + Snowdon', note: 'warmup',    accent: false, dim: false },
-    { time: '09:45', run: 'Superstar',       note: 'peak →',   accent: true,  dim: false },
-    { time: '10:50', run: '—',              note: 'rest',      accent: false, dim: true  },
-    { time: '11:25', run: 'Cascade',         note: '2nd block', accent: false, dim: false },
-    { time: '13:40', run: '—',              note: 'done',      accent: false, dim: true  },
-  ];
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: DARK_BG, fontFamily: "'Barlow', sans-serif", color: 'white' }}>
-      <StatusBar dark />
-      <div className="px-4 pt-1 pb-4">
-        <p className="text-[18px] font-bold">Mountain Coach</p>
-        <p className="text-[10px] text-white/30 mt-0.5">Killington · Saturday</p>
-      </div>
-      <div className="mx-3 flex-1">
-        <p className="text-[8px] tracking-widest uppercase text-white/20 mb-2">Today's plan</p>
-        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
-          {plan.map((item, i) => (
-            <div key={i} className={`flex items-center gap-3 px-3 border-b border-white/[0.04] last:border-0 ${item.dim ? 'py-2 opacity-28' : 'py-3.5'}`}>
-              <span className="text-[10px] font-mono text-white/20 w-8 shrink-0">{item.time}</span>
-              <span className={`flex-1 leading-none font-bold ${item.run === '—' ? 'text-[11px] text-white/18' : 'text-[13px]'}`}>{item.run}</span>
-              <span className="text-[10px] shrink-0" style={{ color: item.accent ? BLUE : 'rgba(255,255,255,0.22)' }}>{item.note}</span>
-            </div>
-          ))}
-        </div>
-        <p className="text-[9px] text-white/15 mt-2.5">Built from 12 Killington sessions · avg fatigue: run 9.2</p>
-      </div>
-    </div>
-  );
-}
-
-// Tab 1: Fatigue window visualization
-function CoachScreenFatigue() {
-  const speeds = [34.2, 32.8, 33.1, 30.4, 31.2, 29.8, 28.6, 27.4, 27.8, 28.1];
-  const max = 36, min = 24, range = max - min;
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: DARK_BG, fontFamily: "'Barlow', sans-serif", color: 'white' }}>
-      <StatusBar dark />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[18px] font-bold">Fatigue Window</p>
-        <p className="text-[10px] text-white/30 mt-0.5">Based on 12 Killington sessions</p>
-      </div>
-      <div className="mx-3 bg-white/[0.05] rounded-2xl p-4 mb-3">
-        <p className="text-[8px] tracking-widest uppercase text-white/20 mb-3">Speed over session (Jan 18)</p>
-        <div className="relative" style={{ height: 80 }}>
-          <svg viewBox={`0 0 ${speeds.length * 24} 80`} className="w-full h-full overflow-visible">
-            <rect x={8 * 24} y="0" width={24} height={80} fill={`${BLUE}22`} />
-            <polyline fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round"
-              points={speeds.map((s, i) => `${i * 24 + 12},${80 - ((s - min) / range) * 70}`).join(' ')} />
-            {speeds.map((s, i) => (
-              <circle key={i} cx={i * 24 + 12} cy={80 - ((s - min) / range) * 70} r={i === 8 ? 4 : 2.5}
-                fill={i === 8 ? BLUE : 'rgba(255,255,255,0.6)'} />
-            ))}
-            <text x={8 * 24 + 2} y={12} fontSize="7" fill={`${BLUE}CC`}>fatigue</text>
-          </svg>
-        </div>
-        <div className="flex justify-between mt-1">
-          {[1,2,3,4,5,6,7,8,'9↑',10].map((r, i) => (
-            <span key={i} className="text-[8px] text-center" style={{ width: 24, color: i === 8 ? BLUE : 'rgba(255,255,255,0.2)' }}>{r}</span>
-          ))}
-        </div>
-      </div>
-      <div className="mx-3 space-y-2">
-        <div className="bg-white/[0.05] rounded-xl p-3 flex justify-between items-center">
-          <span className="text-[12px] text-white/50">Avg onset</span>
-          <span className="text-[18px] font-bold" style={{ color: BLUE }}>Run 9.2</span>
-        </div>
-        <div className="bg-white/[0.05] rounded-xl p-3 flex justify-between items-center">
-          <span className="text-[12px] text-white/50">Speed drop</span>
-          <span className="text-[18px] font-bold text-white">–18%</span>
-        </div>
-        <div className="bg-white/[0.05] rounded-xl p-3">
-          <p className="text-[11px] text-white/45 leading-snug">Today's plan puts a rest at run 9 — before your window hits.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Tab 2: Session history powering the plan
-function CoachScreenHistory() {
-  const sessions = [
-    { resort: 'Killington', n: 12, fatigue: 9.2, peak: '09:45–11:00' },
-    { resort: 'Stowe',      n: 8,  fatigue: 8.5, peak: '09:30–10:45' },
-    { resort: 'Sugarbush',  n: 5,  fatigue: 10.1, peak: '10:00–11:30' },
-  ];
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: DARK_BG, fontFamily: "'Barlow', sans-serif", color: 'white' }}>
-      <StatusBar dark />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[18px] font-bold">History Powering Plan</p>
-        <p className="text-[10px] text-white/30 mt-0.5">25 sessions · 3 resorts</p>
-      </div>
-      <div className="mx-3 flex-1 space-y-2">
-        <p className="text-[8px] tracking-widest uppercase text-white/20 mb-1">Resorts analyzed</p>
-        {sessions.map(s => (
-          <div key={s.resort} className="rounded-xl p-3.5" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="flex justify-between items-center mb-2">
-              <p className="text-[13px] font-bold">{s.resort}</p>
-              <span className="text-[10px] text-white/30">{s.n} sessions</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <p className="text-[8px] text-white/25 uppercase tracking-wider mb-0.5">Fatigue onset</p>
-                <p className="text-[13px] font-semibold" style={{ color: BLUE }}>Run {s.fatigue}</p>
-              </div>
-              <div>
-                <p className="text-[8px] text-white/25 uppercase tracking-wider mb-0.5">Peak window</p>
-                <p className="text-[11px] font-semibold text-white/70">{s.peak}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-        <div className="rounded-xl p-3" style={{ background: `${BLUE}18`, border: `1px solid ${BLUE}30` }}>
-          <p className="text-[11px] text-white/50 leading-snug">More uploads = more precise plans. Every session refines your profile.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   HISTORY SCREENS — three distinct views
-───────────────────────────────────────────────────────────── */
-
-// Tab 0: Session archive list
-function HistoryScreenArchive() {
-  const sessions = [
-    { resort: 'Killington', date: 'Jan 18', score: 78, runs: 14, delta: '+3' },
-    { resort: 'Stowe',      date: 'Jan 11', score: 74, runs: 11, delta: '+3' },
-    { resort: 'Sugarbush',  date: 'Dec 28', score: 71, runs: 9,  delta: '+6' },
-    { resort: 'Okemo',      date: 'Dec 20', score: 65, runs: 7,  delta: 'first' },
-  ];
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: LIGHT_BG, fontFamily: "'Barlow', sans-serif" }}>
-      <StatusBar dark={false} />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[18px] font-bold" style={{ color: INK }}>Sessions</p>
-        <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>2025–26 season · 6 uploads</p>
-      </div>
-      <div className="px-4 space-y-2">
-        {sessions.map(s => (
-          <div key={s.date} className="bg-white rounded-xl px-4 py-3 flex items-center justify-between" style={{ boxShadow: '0 1px 3px rgba(13,14,20,0.06)' }}>
-            <div>
-              <p className="text-[13px] font-bold" style={{ color: INK }}>{s.resort}</p>
-              <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>{s.date} · {s.runs} runs</p>
-            </div>
-            <div className="text-right">
-              <p className="text-[22px] font-bold leading-none" style={{ color: BLUE }}>{s.score}</p>
-              <p className="text-[10px]" style={{ color: MUTED }}>{s.delta}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <p className="text-center text-[9px] mt-3" style={{ color: MUTED }}>All sessions saved · Pro plan</p>
-    </div>
-  );
-}
-
-// Tab 1: Score progression chart
-function HistoryScreenScoreHistory() {
-  const data = [62, 65, 68, 65, 71, 74, 78];
-  const labels = ['D15', 'D20', 'D28', 'J4', 'J11', 'J15', 'J18'];
-  const max = 85, min = 55, range = max - min;
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: LIGHT_BG, fontFamily: "'Barlow', sans-serif" }}>
-      <StatusBar dark={false} />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[18px] font-bold" style={{ color: INK }}>Score History</p>
-        <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>62 → 78 this season</p>
-      </div>
-      {/* Big chart */}
-      <div className="mx-4 bg-white rounded-2xl p-4 mb-3" style={{ boxShadow: '0 1px 6px rgba(13,14,20,0.07)' }}>
-        <div className="relative" style={{ height: 120 }}>
-          <svg viewBox={`0 0 ${data.length * 30} 120`} className="w-full h-full overflow-visible">
-            {[65, 70, 75, 80].map(v => {
-              const y = 120 - ((v - min) / range) * 110;
-              return <line key={v} x1="0" y1={y} x2={data.length * 30} y2={y} stroke="rgba(13,14,20,0.06)" strokeWidth="0.8" />;
-            })}
-            <defs>
-              <linearGradient id="scoreGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={BLUE} stopOpacity="0.18" />
-                <stop offset="100%" stopColor={BLUE} stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <polygon fill="url(#scoreGrad)"
-              points={[
-                ...data.map((v, i) => `${i * 30 + 15},${120 - ((v - min) / range) * 110}`),
-                `${(data.length - 1) * 30 + 15},120`, `15,120`,
-              ].join(' ')} />
-            <polyline fill="none" stroke={BLUE} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round"
-              points={data.map((v, i) => `${i * 30 + 15},${120 - ((v - min) / range) * 110}`).join(' ')} />
-            {data.map((v, i) => (
-              <circle key={i} cx={i * 30 + 15} cy={120 - ((v - min) / range) * 110}
-                r={i === data.length - 1 ? 5 : 3.5}
-                fill={i === data.length - 1 ? BLUE : 'white'} stroke={BLUE} strokeWidth="2" />
-            ))}
-          </svg>
-        </div>
-        <div className="flex justify-between mt-1">
-          {labels.map((l, i) => (
-            <span key={i} className="text-[8px] text-center" style={{ width: 30, color: i === data.length - 1 ? BLUE : MUTED }}>{l}</span>
-          ))}
+    <Screen active="debrief">
+      <ResortHead />
+      <div className="mx-4 rounded-[18px] p-4 mb-3" style={{ background: BLUE }}>
+        <p className="text-[8px] tracking-[0.2em] font-semibold" style={{ color: 'rgba(255,255,255,0.72)' }}>VERTICAL</p>
+        <p className="text-[34px] font-extrabold leading-none text-white mt-1">21,840<span className="text-[14px] font-bold"> ft</span></p>
+        <div className="flex items-center gap-4 mt-3">
+          <div><p className="text-[13px] font-bold text-white leading-none">6,820<span className="text-[8px] font-semibold" style={{ color: 'rgba(255,255,255,0.7)' }}> ft/hr</span></p><p className="text-[8px] mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>Descent rate</p></div>
+          <div className="w-px self-stretch" style={{ background: 'rgba(255,255,255,0.25)' }} />
+          <div><p className="text-[13px] font-bold text-white leading-none">3:12</p><p className="text-[8px] mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>Ski time · 75%</p></div>
         </div>
       </div>
       <div className="mx-4 grid grid-cols-3 gap-2">
-        {[['Current', '78', false], ['Season best', '78', false], ['Gain', '+16', true]].map(([l, v, accent]) => (
-          <div key={l} className="bg-white rounded-xl p-3 text-center" style={{ boxShadow: '0 1px 3px rgba(13,14,20,0.06)' }}>
-            <p className="text-[8px] uppercase tracking-wider mb-1" style={{ color: MUTED }}>{l}</p>
-            <p className="text-[18px] font-bold leading-none" style={{ color: accent ? BLUE : INK }}>{v}</p>
+        {stats.map(([l, v, u]) => (
+          <div key={l} className="rounded-xl p-2.5" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+            <p className="text-[8px] mb-1" style={{ color: MUTED }}>{l}</p>
+            <p className="text-[15px] font-bold leading-none" style={{ color: INK }}>{v}<span className="text-[8px] font-semibold ml-0.5" style={{ color: FAINT }}>{u}</span></p>
           </div>
         ))}
       </div>
-    </div>
+    </Screen>
   );
 }
 
-// Tab 2: Resort breakdown
-function HistoryScreenResort() {
-  const resorts = [
-    { name: 'Killington', sessions: 12, best: 78, avg: 74 },
-    { name: 'Stowe',      sessions: 8,  best: 74, avg: 70 },
-    { name: 'Sugarbush',  sessions: 5,  best: 71, avg: 68 },
-    { name: 'Okemo',      sessions: 3,  best: 65, avg: 64 },
-  ];
+function DebriefChart() {
+  const runs = [2100, 2240, 1980, 2050, 1890, 2010, 1760, 2120, 1950, 1820, 1920];
+  const max = Math.max(...runs);
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden" style={{ background: LIGHT_BG, fontFamily: "'Barlow', sans-serif" }}>
-      <StatusBar dark={false} />
-      <div className="px-4 pt-1 pb-3">
-        <p className="text-[18px] font-bold" style={{ color: INK }}>By Resort</p>
-        <p className="text-[10px] mt-0.5" style={{ color: MUTED }}>4 mountains · 28 sessions</p>
+    <Screen active="debrief">
+      <ResortHead />
+      <p className="px-4 text-[13px] font-bold mb-2" style={{ color: INK }}>Vertical by run</p>
+      <div className="mx-4 rounded-2xl p-3 mb-3" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+        <div className="flex items-end justify-between gap-1" style={{ height: 96 }}>
+          {runs.map((v, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center justify-end h-full">
+              <div className="w-full rounded-t-[3px]" style={{ height: `${(v / max) * 100}%`, background: BLUE }} />
+              <span className="text-[7px] mt-1" style={{ color: FAINT }}>{i + 1}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="px-4 space-y-2">
-        {resorts.map((r, i) => (
-          <div key={r.name} className="bg-white rounded-xl p-3.5" style={{ boxShadow: '0 1px 3px rgba(13,14,20,0.06)', borderLeft: i === 0 ? `3px solid ${BLUE}` : '3px solid transparent' }}>
-            <div className="flex justify-between items-center mb-2">
-              <p className="text-[13px] font-bold" style={{ color: INK }}>{r.name}</p>
-              <span className="text-[9px]" style={{ color: MUTED }}>{r.sessions} sessions</span>
-            </div>
-            <div className="flex gap-4">
-              <div>
-                <p className="text-[8px] uppercase tracking-wider mb-0.5" style={{ color: MUTED }}>Best</p>
-                <p className="text-[16px] font-bold leading-none" style={{ color: i === 0 ? BLUE : INK }}>{r.best}</p>
-              </div>
-              <div>
-                <p className="text-[8px] uppercase tracking-wider mb-0.5" style={{ color: MUTED }}>Avg</p>
-                <p className="text-[16px] font-bold leading-none" style={{ color: MUTED }}>{r.avg}</p>
-              </div>
-              <div className="flex-1">
-                <p className="text-[8px] uppercase tracking-wider mb-1" style={{ color: MUTED }}>Trend</p>
-                <div className="h-1.5 rounded-full" style={{ background: 'rgba(13,14,20,0.07)' }}>
-                  <div className="h-full rounded-full" style={{ width: `${r.best}%`, background: i === 0 ? BLUE : `${BLUE}70` }} />
-                </div>
-              </div>
-            </div>
+      <p className="px-4 text-[13px] font-bold mb-2" style={{ color: INK }}>Time on mountain</p>
+      <div className="mx-4 rounded-2xl p-3" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+        <div className="flex h-2.5 rounded-full overflow-hidden">
+          <div style={{ flex: 75, background: BLUE }} />
+          <div style={{ flex: 25, background: FAINT }} />
+        </div>
+        <div className="flex gap-4 mt-2.5">
+          <div className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full" style={{ background: BLUE }} /><span className="text-[9px]" style={{ color: MUTED }}>Skiing 3:12 · 75%</span></div>
+          <div className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full" style={{ background: FAINT }} /><span className="text-[9px]" style={{ color: MUTED }}>Lifts 1:05 · 25%</span></div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+function DebriefTimeline() {
+  const runs = [[1, 2100, 22.4, 39.1], [2, 2240, 24.8, 44.2], [3, 1980, 23.1, 41.0], [4, 2050, 25.6, 47.6], [5, 1890, 22.9, 38.7], [6, 2010, 24.2, 42.3], [7, 1760, 21.8, 36.9], [8, 2120, 25.1, 45.8], [9, 1950, 23.7, 40.4]];
+  return (
+    <Screen active="debrief">
+      <ResortHead />
+      <p className="px-4 text-[13px] font-bold mb-2" style={{ color: INK }}>Run timeline</p>
+      <div className="mx-4 rounded-2xl overflow-hidden" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+        <div className="grid px-3 py-2" style={{ gridTemplateColumns: '0.5fr 1fr 1fr 1fr', borderBottom: `1px solid ${LINE}` }}>
+          {['RUN', 'VERT (FT)', 'AVG (MPH)', 'TOP (MPH)'].map(hd => <span key={hd} className="text-[7px] tracking-wider font-semibold" style={{ color: FAINT }}>{hd}</span>)}
+        </div>
+        {runs.map(([n, v, a, t]) => (
+          <div key={n} className="grid px-3 py-2 items-center" style={{ gridTemplateColumns: '0.5fr 1fr 1fr 1fr', borderBottom: `1px solid ${SUBTLE}` }}>
+            <span className="text-[11px] font-bold" style={{ color: INK }}>{n}</span>
+            <span className="text-[11px] font-medium" style={{ color: INK }}>{v.toLocaleString()}</span>
+            <span className="text-[11px]" style={{ color: MUTED }}>{a}</span>
+            <span className="text-[11px]" style={{ color: MUTED }}>{t}</span>
           </div>
         ))}
       </div>
-    </div>
+    </Screen>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SCORE SCREENS
+───────────────────────────────────────────────────────────── */
+function ScoreMain() {
+  const C = 2 * Math.PI * 52;
+  return (
+    <Screen active="score">
+      <p className="text-center text-[8px] tracking-[0.22em] font-semibold pt-1" style={{ color: BLUE }}>SLOPESCORE</p>
+      <p className="text-center text-[15px] font-bold" style={{ color: INK }}>Jackson Hole</p>
+      <div className="flex justify-center mt-3">
+        <div className="relative flex items-center justify-center" style={{ width: 150, height: 150 }}>
+          <svg viewBox="-75 -75 150 150" className="absolute inset-0 w-full h-full">
+            <circle cx="0" cy="0" r="52" fill="none" stroke={SUBTLE} strokeWidth="11" />
+            <circle cx="0" cy="0" r="52" fill="none" stroke={BLUE} strokeWidth="11" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * 0.22} transform="rotate(-90)" />
+          </svg>
+          <div className="text-center z-10"><p className="text-[44px] font-extrabold leading-none" style={{ color: BLUE }}>78</p><p className="text-[10px] font-semibold" style={{ color: FAINT }}>/ 100</p></div>
+        </div>
+      </div>
+      <div className="flex items-center justify-center gap-2 mt-2">
+        <span className="text-[15px] font-bold" style={{ color: BLUE }}>Strong</span>
+        <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full" style={{ background: SUBTLE, color: GOOD }}>↑ +6 vs your average</span>
+      </div>
+      <div className="mx-4 mt-4 flex rounded-2xl py-3" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+        {[['72', 'YOUR AVG'], ['84', 'YOUR BEST'], ['9', 'SESSIONS']].map(([v, l], i, arr) => (
+          <div key={l} className="flex-1 text-center" style={{ borderRight: i < arr.length - 1 ? `1px solid ${LINE}` : 'none' }}>
+            <p className="text-[20px] font-extrabold leading-none" style={{ color: INK }}>{v}</p>
+            <p className="text-[8px] tracking-wider font-semibold mt-1" style={{ color: FAINT }}>{l}</p>
+          </div>
+        ))}
+      </div>
+    </Screen>
+  );
+}
+
+function ScoreDimensions() {
+  const dims = [['Fatigue resistance', 88], ['Consistency', 79], ['Vertical efficiency', 85], ['Progression', 68], ['Recovery use', 62]];
+  const col = (v) => (v >= 80 ? GOOD : v >= 60 ? BLUE : '#D98324');
+  return (
+    <Screen active="score">
+      <p className="text-center text-[8px] tracking-[0.22em] font-semibold pt-1" style={{ color: BLUE }}>SLOPESCORE</p>
+      <p className="text-center text-[15px] font-bold" style={{ color: INK }}>Jackson Hole</p>
+      <p className="px-4 text-[8px] tracking-widest font-semibold mt-3 mb-2" style={{ color: FAINT }}>DIMENSIONS</p>
+      <div className="mx-4 rounded-2xl px-4 py-1" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+        {dims.map(([l, v], i) => (
+          <div key={l} className="py-2.5" style={{ borderBottom: i < dims.length - 1 ? `1px solid ${SUBTLE}` : 'none' }}>
+            <div className="flex justify-between items-center mb-1.5"><span className="text-[12px] font-semibold" style={{ color: INK }}>{l}</span><span className="text-[14px] font-bold" style={{ color: col(v) }}>{v}</span></div>
+            <div className="h-1.5 rounded-full" style={{ background: SUBTLE }}><div className="h-full rounded-full" style={{ width: `${v}%`, background: col(v) }} /></div>
+          </div>
+        ))}
+      </div>
+    </Screen>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COACH SCREENS
+───────────────────────────────────────────────────────────── */
+function CoachIntro() {
+  const starters = ['Plan my optimal day', 'What should I work on?', 'Where does my data say I fade?'];
+  return (
+    <Screen active="coach">
+      <div className="flex flex-col items-center px-5 pt-5">
+        <div className="w-12 h-12 rounded-full flex items-center justify-center mb-3" style={{ background: ACCLT }}>
+          <TabIcon name="coach" color={BLUE} />
+        </div>
+        <p className="text-[20px] font-extrabold" style={{ color: INK }}>Mountain Coach</p>
+        <p className="text-[10px] text-center leading-snug mt-1.5" style={{ color: MUTED }}>I read your sessions — fatigue window, vertical, consistency — and coach from your real numbers. Ask me anything, or start here:</p>
+        <div className="w-full mt-4 space-y-2">
+          {starters.map(q => (
+            <div key={q} className="rounded-xl px-3.5 py-3 text-[12px] font-semibold" style={{ background: SURF, border: `1px solid ${LINE}`, color: INK }}>{q}</div>
+          ))}
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+function CoachPlan() {
+  return (
+    <Screen active="coach">
+      <div className="px-3 pt-3 space-y-2">
+        <div className="flex justify-end"><div className="rounded-2xl rounded-br-md px-3 py-2 text-[11px] text-white max-w-[80%]" style={{ background: BLUE }}>Plan my optimal day</div></div>
+        <div className="flex justify-start"><div className="rounded-2xl rounded-bl-md px-3 py-2.5 text-[11px] max-w-[90%] leading-snug" style={{ background: SURF, border: `1px solid ${LINE}`, color: INK }}>
+          Let's target <b>12 runs and ~23,000 ft</b> — a notch above your Jackson Hole average. Push runs 1–6 while fresh (your 88 fatigue score holds early), break after run 7, then 4 more. Stop by run 12.<br /><br />What are you working on this season?
+        </div></div>
+      </div>
+    </Screen>
+  );
+}
+
+function CoachWork() {
+  return (
+    <Screen active="coach">
+      <div className="px-3 pt-3 space-y-2">
+        <div className="flex justify-end"><div className="rounded-2xl rounded-br-md px-3 py-2 text-[11px] text-white max-w-[80%]" style={{ background: BLUE }}>What should I work on?</div></div>
+        <div className="flex justify-start"><div className="rounded-2xl rounded-bl-md px-3 py-2.5 text-[11px] max-w-[90%] leading-snug" style={{ background: SURF, border: `1px solid ${LINE}`, color: INK }}>
+          Your consistency sits at <b>79</b> — speed swings most on runs 7–9 as you tire. Tighten the back half: same line, controlled. Hold it and your SlopeScore clears <b>82</b>.
+        </div></div>
+      </div>
+    </Screen>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HISTORY SCREENS
+───────────────────────────────────────────────────────────── */
+function SavedSessions() {
+  const sessions = [['Jackson Hole', 'February 14, 2024'], ['Stowe', 'February 7, 2024'], ['Sugarloaf', 'January 29, 2024'], ['Big Sky', 'January 18, 2024']];
+  return (
+    <Screen active="debrief">
+      <p className="px-4 pt-1 text-[18px] font-bold" style={{ color: INK }}>Saved sessions</p>
+      <div className="mx-4 mt-2 space-y-2">
+        {sessions.map(([r, d]) => (
+          <div key={r} className="flex items-center justify-between rounded-xl px-4 py-3" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+            <div><p className="text-[12px] font-bold" style={{ color: INK }}>{r}</p><p className="text-[9px] mt-0.5" style={{ color: MUTED }}>{d}</p></div>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={FAINT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 6 15 12 9 18" /></svg>
+          </div>
+        ))}
+      </div>
+    </Screen>
+  );
+}
+
+function CalendarView() {
+  const marked = [3, 7, 12, 18, 22];
+  const sel = 14;
+  return (
+    <Screen active="debrief">
+      <p className="px-4 pt-1 text-[16px] font-bold mb-2" style={{ color: INK }}>February 2024</p>
+      <div className="mx-4 rounded-2xl p-3" style={{ background: SURF, border: `1px solid ${LINE}` }}>
+        <div className="grid grid-cols-7 mb-2">{['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <span key={i} className="text-center text-[8px] font-semibold" style={{ color: FAINT }}>{d}</span>)}</div>
+        <div className="grid grid-cols-7 gap-y-1.5">
+          {Array.from({ length: 33 }, (_, i) => {
+            const day = i - 3;
+            if (day < 1 || day > 29) return <div key={i} />;
+            const isSel = day === sel;
+            const isMarked = marked.includes(day);
+            return (
+              <div key={i} className="flex flex-col items-center">
+                <div className="rounded-full flex items-center justify-center" style={{ width: 19, height: 19, background: isSel ? BLUE : 'transparent' }}>
+                  <span className="text-[9px]" style={{ color: isSel ? '#fff' : INK, fontWeight: isSel ? 700 : 500 }}>{day}</span>
+                </div>
+                {isMarked && !isSel ? <div className="rounded-full" style={{ width: 3, height: 3, background: BLUE, marginTop: 1 }} /> : <div style={{ height: 4 }} />}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </Screen>
   );
 }
 
@@ -653,10 +429,7 @@ function WhatSlopesSection() {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2
-                className="font-display font-bold mb-5"
-                style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', lineHeight: 1.06, color: INK }}
-              >
+              <h2 className="font-display font-bold mb-5" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', lineHeight: 1.06, color: INK }}>
                 What is Slopes App?
               </h2>
               <p className="text-[17px] leading-[1.75] mb-6" style={{ color: MUTED }}>
@@ -699,38 +472,19 @@ function WhatSlopesSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   HOW TO DO IT — three steps
+   HOW TO DO IT
 ───────────────────────────────────────────────────────────── */
 function HowToSection() {
   const steps = [
-    {
-      n: '01',
-      title: 'Track your day in Slopes',
-      body: 'Open Slopes before your first run. It automatically records speed, vertical, and GPS for every run. No setup. Works with iPhone or Apple Watch.',
-      detail: 'Available free on the App Store',
-    },
-    {
-      n: '02',
-      title: 'Export your .slopes file',
-      body: 'After your session, tap the share icon in Slopes and export your session file. Takes about 10 seconds. You can do it on the chairlift.',
-      detail: 'Logbook → Session → Share → Export',
-    },
-    {
-      n: '03',
-      title: 'Upload to SlopeIQ',
-      body: 'Drop the file into SlopeIQ. In under 30 seconds you have a full debrief — stats, coaching observations, and your updated SlopeScore.',
-      detail: 'Free for one session. Pro for the full season.',
-    },
+    { n: '01', title: 'Track your day in Slopes', body: 'Open Slopes before your first run. It automatically records speed, vertical, and GPS for every run. No setup. Works with iPhone or Apple Watch.', detail: 'Available free on the App Store' },
+    { n: '02', title: 'Export your .slopes file', body: 'After your session, tap the share icon in Slopes and export your session file. Takes about 10 seconds. You can do it on the chairlift.', detail: 'Logbook → Session → Share → Export' },
+    { n: '03', title: 'Upload to SlopeIQ', body: 'Drop the file into SlopeIQ. In under 30 seconds you have a full debrief — stats, coaching observations, and your updated SlopeScore.', detail: 'Free insights every session. Pro for score + coach.' },
   ];
-
   return (
     <section className="py-24 px-6 sm:px-10" style={{ background: 'white' }}>
       <div className="max-w-[1100px] mx-auto">
         <Reveal>
-          <h2
-            className="font-display font-bold mb-16"
-            style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', lineHeight: 1.04, color: INK }}
-          >
+          <h2 className="font-display font-bold mb-16" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', lineHeight: 1.04, color: INK }}>
             How it works.
           </h2>
         </Reveal>
@@ -777,7 +531,7 @@ function HeroSection() {
         initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}>
         <div className="relative overflow-hidden" style={{ maxHeight: '52vh' }}>
-          <IPhone width={280}><DebriefScreenStats /></IPhone>
+          <IPhone width={280}><DebriefStats /></IPhone>
           <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
             style={{ background: 'linear-gradient(to top, #B5C5FF, transparent)' }} />
         </div>
@@ -800,13 +554,13 @@ function DoublePhonesSection() {
         </Reveal>
         <div className="flex items-end justify-center gap-6 sm:gap-10">
           <Reveal delay={0.05} className="hidden sm:block" style={{ marginBottom: '-2rem' }}>
-            <IPhone width={235}><HistoryScreenArchive /></IPhone>
+            <IPhone width={235}><SavedSessions /></IPhone>
           </Reveal>
           <Reveal delay={0}>
-            <IPhone width={290}><DebriefScreenCoach /></IPhone>
+            <IPhone width={290}><DebriefStats /></IPhone>
           </Reveal>
           <Reveal delay={0.1} className="hidden sm:block" style={{ marginBottom: '-3rem' }}>
-            <IPhone width={235}><ScoreScreenGauge /></IPhone>
+            <IPhone width={235}><ScoreMain /></IPhone>
           </Reveal>
         </div>
       </div>
@@ -817,11 +571,9 @@ function DoublePhonesSection() {
 /* ─────────────────────────────────────────────────────────────
    FEATURE BLOCK — phone + tab switcher
 ───────────────────────────────────────────────────────────── */
-function FeatureBlock({ headline, body, tabs, screens, flip = false, dark = false }) {
+function FeatureBlock({ headline, body, tabs, screens, flip = false, tint = false }) {
   const [active, setActive] = useState(0);
-  const bg = dark ? DARK_BG : 'white';
-  const headColor = dark ? '#EFEFED' : INK;
-  const bodyColor = dark ? 'rgba(239,239,237,0.48)' : MUTED;
+  const bg = tint ? APP_BG : 'white';
 
   return (
     <section className="py-28 px-6" style={{ background: bg }}>
@@ -840,25 +592,24 @@ function FeatureBlock({ headline, body, tabs, screens, flip = false, dark = fals
 
         <Reveal delay={0.1} className={flip ? 'lg:order-1' : 'lg:order-2'}>
           <h2 className="font-display font-bold leading-tight tracking-tight mb-5"
-            style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', lineHeight: 1.04, color: headColor }}>
+            style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', lineHeight: 1.04, color: INK }}>
             {headline}
           </h2>
-          <p className="text-[17px] leading-[1.75] mb-8" style={{ color: bodyColor }}>{body}</p>
+          <p className="text-[17px] leading-[1.75] mb-8" style={{ color: MUTED }}>{body}</p>
           <div className="space-y-1.5">
             {tabs.map((tab, i) => (
               <button key={i} onClick={() => setActive(i)}
                 className="w-full text-left px-5 py-3.5 rounded-xl transition-all duration-200 border"
                 style={{
-                  background: active === i ? (dark ? 'rgba(239,239,237,0.10)' : 'rgba(27,118,220,0.07)') : 'transparent',
-                  borderColor: active === i ? (dark ? 'rgba(239,239,237,0.12)' : `${BLUE}30`) : 'transparent',
+                  background: active === i ? 'rgba(27,118,220,0.07)' : 'transparent',
+                  borderColor: active === i ? `${BLUE}30` : 'transparent',
                 }}>
-                <p className="text-[14px] font-semibold transition-colors"
-                  style={{ color: active === i ? (dark ? '#EFEFED' : BLUE) : bodyColor }}>
+                <p className="text-[14px] font-semibold transition-colors" style={{ color: active === i ? BLUE : MUTED }}>
                   {tab.label}
                 </p>
                 {active === i && (
                   <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                    className="text-[13px] mt-1 leading-snug" style={{ color: bodyColor }}>
+                    className="text-[13px] mt-1 leading-snug" style={{ color: MUTED }}>
                     {tab.desc}
                   </motion.p>
                 )}
@@ -914,7 +665,7 @@ function CTASection() {
             Your runs are talking.
           </h2>
           <p className="text-[18px] max-w-[340px] mx-auto leading-[1.7] mb-10" style={{ color: 'rgba(239,239,237,0.50)' }}>
-            Free to download. One session on us. Upgrade when it clicks.
+            Free to download. Full session insights on us. Upgrade when it clicks.
           </p>
           <AppStoreButton light />
           <p className="text-[11px] mt-6 tracking-[0.18em] uppercase font-sans" style={{ color: 'rgba(239,239,237,0.20)' }}>
@@ -937,46 +688,44 @@ export default function Landing() {
 
       <FeatureBlock
         headline={<>Know what<br />happened.</>}
-        body="Upload your .slopes file and get a complete picture of your session — stats, coaching observations, and a run-by-run timeline."
+        body="Upload your .slopes file and get a complete picture of your session — a vertical-first breakdown, the stats that matter, and a run-by-run timeline."
         tabs={[
-          { label: 'Session stats', desc: 'Top speed, vertical, ski time, run count, vertical rate. Every number from your day, instantly.' },
-          { label: 'Coached debrief', desc: 'Seven observations per session grounded in your exact numbers. Not averages — your specific day.' },
-          { label: 'Run timeline', desc: 'Every run listed with speed and vertical. See exactly when your speed dropped — and by how much.' },
+          { label: 'Session stats', desc: 'Vertical, descent rate, ski time, top speed, runs, distance. Every number from your day, instantly.' },
+          { label: 'Vertical by run', desc: 'See how much you earned each run, and how your time split between skiing and lifts.' },
+          { label: 'Run timeline', desc: 'Every run listed with vertical, average and top speed. The whole day, run by run.' },
         ]}
-        screens={[<DebriefScreenStats />, <DebriefScreenCoach />, <DebriefScreenTimeline />]}
+        screens={[<DebriefStats />, <DebriefChart />, <DebriefTimeline />]}
       />
 
-      <FeatureBlock flip dark
+      <FeatureBlock flip tint
         headline={<>One number,<br />all season.</>}
-        body="SlopeScore is 0–100, calibrated to your baseline across five performance dimensions. Track whether you're actually improving."
+        body="SlopeScore is 0–100, graded against your own baseline across five performance dimensions. It calibrates as you build history, so it actually means something for you."
         tabs={[
-          { label: 'SlopeScore', desc: 'A single number accounting for consistency, fatigue, vertical, recovery, and speed.' },
-          { label: 'Season trend', desc: 'Your SlopeScore charted across every session this season. See the arc of your improvement.' },
-          { label: 'Dimension breakdown', desc: 'Five sub-scores show where you improved and where you faded. Weakest link identified.' },
+          { label: 'Your SlopeScore', desc: 'A single number — with how today compares to your average, your best, and your session count.' },
+          { label: 'Dimension breakdown', desc: 'Five weighted sub-scores: fatigue resistance, consistency, vertical efficiency, progression, recovery.' },
         ]}
-        screens={[<ScoreScreenGauge />, <ScoreScreenTrend />, <ScoreScreenBreakdown />]}
+        screens={[<ScoreMain />, <ScoreDimensions />]}
       />
 
       <FeatureBlock
-        headline={<>Your day,<br />before you click in.</>}
-        body="Tell the coach where you're skiing. It reads your history, finds your fatigue pattern, and sequences your day around it."
+        headline={<>A coach that<br />knows your data.</>}
+        body="The AI Mountain Coach reads your real sessions and coaches from them — run count, vertical, fatigue, and what you're working on. Ask anything."
         tabs={[
-          { label: 'Day plan', desc: 'A full run sequence — warmup, peak window, rest, second block — built from your real fatigue data.' },
-          { label: 'Fatigue window', desc: 'The exact run number where your speed historically drops. Visualized from your session history.' },
-          { label: 'History-aware', desc: 'Every resort you upload from builds a separate profile. Plans get sharper with each session.' },
+          { label: 'Ask anything', desc: 'Start from a prompt or type your own. It already knows your numbers — no setup, no generic advice.' },
+          { label: 'Plan your day', desc: 'A run-count and vertical plan built around your fatigue window, with break timing and a stop point.' },
+          { label: 'What to work on', desc: 'It pinpoints the weak spot in your skiing and tells you exactly how to move the number.' },
         ]}
-        screens={[<CoachScreenPlan />, <CoachScreenFatigue />, <CoachScreenHistory />]}
+        screens={[<CoachIntro />, <CoachPlan />, <CoachWork />]}
       />
 
-      <FeatureBlock flip dark
+      <FeatureBlock flip tint
         headline={<>Every session,<br />saved forever.</>}
-        body="Your full season archive, always there. Go back to any day, track your score across years, see how you ski at each mountain."
+        body="Your full history, always there. Jump to any day from the calendar, and watch your SlopeScore build across the season."
         tabs={[
-          { label: 'Session archive', desc: 'Every upload saved permanently. Free clears on next upload — Pro keeps them all, forever.' },
-          { label: 'Score history', desc: 'Your SlopeScore plotted across the full season. 62 to 78 in six sessions.' },
-          { label: 'Resort history', desc: 'Performance grouped by mountain. Best score, average, fatigue patterns per resort.' },
+          { label: 'Saved sessions', desc: 'Every upload kept and organized by resort and date. Tap any one to reopen the full debrief.' },
+          { label: 'Calendar', desc: 'Navigate your whole season by day. Marked days are sessions — tap to jump straight in.' },
         ]}
-        screens={[<HistoryScreenArchive />, <HistoryScreenScoreHistory />, <HistoryScreenResort />]}
+        screens={[<SavedSessions />, <CalendarView />]}
       />
 
       <WhatSlopesSection />

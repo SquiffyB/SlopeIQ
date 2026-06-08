@@ -9,7 +9,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-30 bg-bg/90 backdrop-blur-md border-b border-line">
       <div className="max-w-[1080px] mx-auto px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center" aria-label="SlopeIQ">
-          <img src="/logo.svg" alt="SlopeIQ" className="h-7" />
+          <img src="/logo.svg" alt="SlopeIQ" className="h-10" />
         </Link>
         <nav className="hidden sm:flex items-center gap-7">
           {[

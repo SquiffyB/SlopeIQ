@@ -29,7 +29,7 @@ export default function FloatingNav() {
       }}
     >
       <Link to="/" className="flex items-center shrink-0" aria-label="SlopeIQ">
-        <img src="/logo.svg" alt="SlopeIQ" className="h-[22px]" />
+        <img src="/logo.svg" alt="SlopeIQ" className="h-10" />
       </Link>
 
       <nav className="hidden sm:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">

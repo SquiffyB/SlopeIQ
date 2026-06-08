@@ -26,7 +26,7 @@ export default function EmailConfirmation() {
   return (
     <div className="min-h-screen bg-bg flex flex-col items-center justify-center px-6">
       <Link to="/" className="mb-10">
-        <img src="/logo.svg" alt="SlopeIQ" className="h-7" />
+        <img src="/logo.svg" alt="SlopeIQ" className="h-16" />
       </Link>
 
       <div className="card p-8 w-full max-w-[420px] shadow-sm text-center">

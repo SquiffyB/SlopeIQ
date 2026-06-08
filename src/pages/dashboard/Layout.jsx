@@ -17,7 +17,7 @@ export default function DashboardLayout() {
       <header className="sticky top-0 z-30 bg-surface/90 backdrop-blur-md border-b border-line">
         <div className="max-w-[1080px] mx-auto px-6 h-16 flex items-center justify-between">
           <NavLink to="/" className="flex items-center">
-            <img src="/logo.svg" alt="SlopeIQ" className="h-7" />
+            <img src="/logo.svg" alt="SlopeIQ" className="h-9" />
           </NavLink>
 
           <nav className="hidden sm:flex items-center gap-6">

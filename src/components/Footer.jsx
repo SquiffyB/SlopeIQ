@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="border-t border-white/10 bg-[#1F2025]">
       <div className="max-w-[1080px] mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <Link to="/">
-          <img src="/logo.svg" alt="SlopeIQ" className="h-6" />
+          <img src="/logo.svg" alt="SlopeIQ" className="h-10" />
         </Link>
         <p className="text-[12px] text-white/30">SlopeIQ is not affiliated with the Slopes app.</p>
         <div className="flex items-center gap-5 text-[12px] text-white/30">

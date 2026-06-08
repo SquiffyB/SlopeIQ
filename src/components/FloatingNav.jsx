@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const NAV_LINKS = [
@@ -11,6 +11,7 @@ const NAV_LINKS = [
 export default function FloatingNav() {
   const { user, signOut } = useAuth();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function FloatingNav() {
       <div className="flex items-center gap-2.5 shrink-0">
         {user ? (
           <button
-            onClick={signOut}
+            onClick={async () => { await signOut(); navigate('/'); }}
             className="text-[13px] font-semibold px-4 py-2 rounded-full text-white transition-all"
             style={{ background: '#1B76DC', boxShadow: '0 2px 10px rgba(27,118,220,0.35)' }}
           >

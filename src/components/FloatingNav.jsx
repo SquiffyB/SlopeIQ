@@ -5,10 +5,11 @@ import { useAuth } from '../contexts/AuthContext';
 const NAV_LINKS = [
   { to: '/',             label: 'Home'         },
   { to: '/how-it-works', label: 'How It Works' },
+  { to: '/pricing',      label: 'Pricing'      },
 ];
 
 export default function FloatingNav() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
@@ -51,20 +52,21 @@ export default function FloatingNav() {
 
       <div className="flex items-center gap-2.5 shrink-0">
         {user ? (
-          <Link
-            to="/dashboard/debrief"
-            className="text-[13px] font-semibold px-4 py-2 rounded-full bg-ink text-white hover:bg-ink/85 transition-colors"
-          >
-            Dashboard
-          </Link>
-        ) : (
-          <a
-            href="#download"
+          <button
+            onClick={signOut}
             className="text-[13px] font-semibold px-4 py-2 rounded-full text-white transition-all"
             style={{ background: '#1B76DC', boxShadow: '0 2px 10px rgba(27,118,220,0.35)' }}
           >
-            Download
-          </a>
+            Sign out
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="text-[13px] font-semibold px-4 py-2 rounded-full text-white transition-all"
+            style={{ background: '#1B76DC', boxShadow: '0 2px 10px rgba(27,118,220,0.35)' }}
+          >
+            Sign in
+          </Link>
         )}
       </div>
     </header>

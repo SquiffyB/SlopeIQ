@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import FloatingNav from './components/FloatingNav';
 import Footer from './components/Footer';
 import Landing from './pages/Landing';
@@ -9,17 +9,6 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import EmailConfirmation from './pages/EmailConfirmation';
-import DashboardLayout from './pages/dashboard/Layout';
-import Debrief from './pages/dashboard/Debrief';
-import Coach from './pages/dashboard/Coach';
-import History from './pages/dashboard/History';
-import Profile from './pages/dashboard/Profile';
-
-function ProtectedRoute({ children }) {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
-  return children;
-}
 
 function MarketingLayout({ children }) {
   return (
@@ -41,16 +30,6 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/emailconfirmation" element={<EmailConfirmation />} />
-      <Route
-        path="/dashboard"
-        element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}
-      >
-        <Route index element={<Navigate to="/dashboard/debrief" replace />} />
-        <Route path="debrief" element={<Debrief />} />
-        <Route path="coach" element={<Coach />} />
-        <Route path="history" element={<History />} />
-        <Route path="profile" element={<Profile />} />
-      </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

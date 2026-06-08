@@ -16,7 +16,7 @@ export default function Login() {
     setLoading(true);
     try {
       await signIn(email, password);
-      navigate('/dashboard/debrief');
+      navigate('/pricing');
     } catch (err) {
       setError(err.message || 'Invalid email or password.');
     } finally {

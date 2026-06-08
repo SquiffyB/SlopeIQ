@@ -17,7 +17,7 @@ export default function Signup() {
     setLoading(true);
     try {
       await signUp(email, password);
-      navigate('/dashboard/debrief');
+      navigate('/pricing');
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {

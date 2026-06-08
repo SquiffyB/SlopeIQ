@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import PricingSection from '../components/PricingSection';
 
 /* ─────────────────────────────────────────────────────────────
    SHARED UTILITIES
@@ -481,7 +482,7 @@ function HowToSection() {
     { n: '03', title: 'Upload to SlopeIQ', body: 'Drop the file into SlopeIQ. In under 30 seconds you have a full debrief — stats, coaching observations, and your updated SlopeScore.', detail: 'Free insights every session. Pro for score + coach.' },
   ];
   return (
-    <section className="py-24 px-6 sm:px-10" style={{ background: 'white' }}>
+    <section id="how-it-works" className="py-24 px-6 sm:px-10" style={{ background: 'white', scrollMarginTop: 70 }}>
       <div className="max-w-[1100px] mx-auto">
         <Reveal>
           <h2 className="font-display font-bold mb-16" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', lineHeight: 1.04, color: INK }}>
@@ -730,6 +731,7 @@ export default function Landing() {
 
       <WhatSlopesSection />
       <HowToSection />
+      <PricingSection />
       <PhilosophySection />
       <CTASection />
     </div>

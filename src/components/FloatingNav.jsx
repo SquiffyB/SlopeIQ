@@ -3,9 +3,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const NAV_LINKS = [
-  { to: '/',             label: 'Home'         },
-  { to: '/how-it-works', label: 'How It Works' },
-  { to: '/pricing',      label: 'Pricing'      },
+  { to: '/',                label: 'Home'         },
+  { to: '/#how-it-works',   label: 'How It Works' },
+  { to: '/#pricing',        label: 'Pricing'      },
+  { to: '/contact',         label: 'Contact'      },
 ];
 
 export default function FloatingNav() {
